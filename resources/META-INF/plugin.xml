@@ -9,7 +9,7 @@
       Usage:
       <ul>
         <li>Windows: plugin should work as it.</li>
-        <li>Linux: you must be able to invoke <b>acpi -i</b>. Be sure ACPI is installed: on Debian or Ubuntu, type <b>sudo apt install acpi</b>.</li>
+        <li>Linux: you must be able to invoke <b>acpi -b</b>. Be sure ACPI is installed: on Debian or Ubuntu, type <b>sudo apt install acpi</b>.</li>
         <li>MacOS: plugin should work as it. You must be able to invoke <b>pmset -g batt</b>.</li>
       </ul>
       Plugin is currently tested on <b>Windows 10</b> and <b>Ubuntu 18.04</b> LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.<br/>
