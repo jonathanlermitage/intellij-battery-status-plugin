@@ -13,7 +13,8 @@
         <li>MacOS: plugin should work as it. You must be able to invoke <b>pmset -g batt</b>.</li>
       </ul>
       Plugin is currently tested on Windows 10 and Ubuntu 18.04 LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.<br/>
-      MacOS: help wanted!
+      MacOS: help wanted!<br/><br/>
+      <img src="https://raw.githubusercontent.com/jonathanlermitage/intellij-battery-status-plugin/master/screenshot.png" alt="plugin preview"/>
     ]]></description>
 
     <change-notes><![CDATA[

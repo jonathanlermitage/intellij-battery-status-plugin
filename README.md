@@ -6,6 +6,8 @@
     IntelliJ IDEA (and other JetBrains products) plugin that displays battery status in the Status Bar.
 </p>
 
+![Screenshot](screenshot.png)
+
 Usage:
 
 * Windows: plugin should work as it.
