@@ -3,7 +3,11 @@
 </h1>
 
 <p align="center">
-    IntelliJ IDEA (and other JetBrains products) plugin that displays battery status in the Status Bar.
+        <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/v/12321-battery-status.svg"/></a>
+        <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/d/12321-battery-status.svg"/></a>
+        <a href="https://github.com/jonathanlermitage/intellij-battery-status-plugin/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/intellij-battery-status-plugin.svg"/></a>
+        <br/>
+IntelliJ IDEA (and other JetBrains products) plugin that displays battery status in the Status Bar.
 </p>
 
 ![Screenshot](screenshot.png)
