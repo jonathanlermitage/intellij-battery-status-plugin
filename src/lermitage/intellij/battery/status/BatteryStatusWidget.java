@@ -22,7 +22,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @NotNull
     @Override
     public String ID() {
-        return "lermitage.intellij.battery.status.BatteryStatusWidget";
+        return BatteryStatusWidget.class.getName();
     }
     
     @Nullable
