@@ -18,7 +18,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.1
+      1.1 (2019/04/29)
       <ul>
         <li>Battery Status widget is now positioned after the InsertOverwrite widget.</li>
         <li>rework deprecated API dependency to make plugin compatible with future IDE builds (<i>StatusBarWidget.TextPresentation.getMaxPossibleText()</i>).</li>
