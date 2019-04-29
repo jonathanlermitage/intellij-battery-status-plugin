@@ -5,6 +5,7 @@ import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 
@@ -29,7 +30,7 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
     
     @Override
     public float getAlignment() {
-        return 0;
+        return Component.CENTER_ALIGNMENT;
     }
     
     @Nullable
