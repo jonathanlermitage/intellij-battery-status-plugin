@@ -1,25 +1,33 @@
 <idea-plugin>
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
       Display battery status in the Status Bar (updated every 20 seconds). Useful if you run IDE in full screen.<br/><br/>
-      Usage:
+      <u>Requirements</u>:
       <ul>
         <li>Windows: plugin should work as it.</li>
         <li>Linux: you must be able to invoke <b>acpi -b</b>. Be sure ACPI is installed: on Debian or Ubuntu, type <b>sudo apt install acpi</b>.</li>
         <li>MacOS: plugin should work as it. You must be able to invoke <b>pmset -g batt</b>.</li>
       </ul>
-      Plugin is currently tested on <b>Windows 10</b> and <b>Ubuntu 18.04</b> LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.<br/>
+      Plugin is currently tested on Windows 10 and Ubuntu 18.04 LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.<br/>
+      MacOS: help wanted!
     ]]></description>
 
-    <!--change-notes><![CDATA[
-        Add change notes here.<br>
-        <em>most HTML tags may be used</em>
-      ]]>
-    </change-notes-->
+    <change-notes><![CDATA[
+      1.1
+      <ul>
+        <li>Battery Status widget is now positioned after the Encoding widget.</li>
+        <li>rework deprecated API dependency to make plugin compatible with future IDE builds (<i>StatusBarWidget.TextPresentation.getMaxPossibleText()</i>).</li>
+      </ul>
+      1.0
+      <ul>
+        <li>first release.</li>
+      </ul>
+    ]]>
+    </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="173.0"/>
