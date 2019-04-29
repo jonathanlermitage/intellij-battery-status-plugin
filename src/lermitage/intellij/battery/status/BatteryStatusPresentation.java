@@ -22,9 +22,9 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
     }
     
     @NotNull
-    @Override
+    //@Override -> this method is deprecated: comment annotation to make it compatible with future IDE builds
     public String getMaxPossibleText() {
-        return getText();
+        return "";
     }
     
     @Override
