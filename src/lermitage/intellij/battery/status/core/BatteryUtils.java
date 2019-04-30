@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class BatteryUtils {
+public class BatteryUtils { // TODO transform to Service
     
     private static LocalTime lastCall = LocalTime.now();
     

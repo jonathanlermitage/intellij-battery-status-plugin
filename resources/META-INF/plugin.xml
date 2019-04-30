@@ -18,11 +18,18 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.2 (2019/0x/xx)
+      <ul>
+        <li>Battery Status refresh time is now configurable.</li>
+        <li>Click on the Battery Status to refresh it immediately.</li>
+      </ul>
+      <br/>
       1.1 (2019/04/29)
       <ul>
         <li>Battery Status widget is now positioned after the InsertOverwrite widget.</li>
         <li>rework deprecated API dependency to make plugin compatible with future IDE builds (<i>StatusBarWidget.TextPresentation.getMaxPossibleText()</i>).</li>
       </ul>
+      <br/>
       1.0
       <ul>
         <li>first release.</li>
@@ -39,6 +46,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <applicationService serviceImplementation="lermitage.intellij.battery.status.cfg.SettingsService"/>
         <postStartupActivity implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
                              id="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
                              order="first"/>
