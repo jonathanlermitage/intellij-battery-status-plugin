@@ -5,7 +5,8 @@
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
-      Display battery status in the Status Bar (updated every 20 seconds). Useful if you run IDE in full screen.<br/><br/>
+      Display battery status in the Status Bar (updated every 20 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Tools</i> &gt; <i>Battery Status</i>).<br/>
+      Useful if you run IDE in full screen.<br/><br/>
       <u>Requirements</u>:
       <ul>
         <li>Windows: plugin should work as it.</li>
