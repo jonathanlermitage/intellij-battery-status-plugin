@@ -50,6 +50,7 @@
         <postStartupActivity implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
                              id="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
                              order="first"/>
+        <applicationConfigurable instance="lermitage.intellij.battery.status.cfg.gui.SettingsForm" id="LermitageBatteryStatus" displayName="Battery Status" parentId="tools"/>
     </extensions>
 
     <actions>

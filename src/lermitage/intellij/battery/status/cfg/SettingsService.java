@@ -8,6 +8,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 
 // see http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html
+@SuppressWarnings("WeakerAccess")
 @State(
         name = "BatteryStatusSettings",
         storages = @Storage("lermitage-battery-status.xml")
@@ -16,7 +17,8 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     
     private Logger LOG = Logger.getInstance(getClass().getName());
     
-    private static final int DEFAULT_REFRESH_INTERVAL = 20_000;
+    public static final int DEFAULT_REFRESH_INTERVAL = 20_000;
+    public static final int MINIMAL_REFRESH = 250;
     
     @SuppressWarnings("WeakerAccess") // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
@@ -24,7 +26,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
-        } else if (batteryRefreshIntervalInMs < 250) {
+        } else if (batteryRefreshIntervalInMs < MINIMAL_REFRESH) {
             LOG.warn("Battery Status refresh interval is too low (" + batteryRefreshIntervalInMs
                     + " ms, min value is 250 ms), it will be updated automatically to " + DEFAULT_REFRESH_INTERVAL + " ms");
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
