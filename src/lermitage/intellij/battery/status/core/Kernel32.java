@@ -1,4 +1,4 @@
-package lermitage.intellij.battery.status;
+package lermitage.intellij.battery.status.core;
 
 import com.sun.jna.Native;
 import com.sun.jna.Structure;

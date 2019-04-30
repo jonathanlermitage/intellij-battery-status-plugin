@@ -1,5 +1,6 @@
-package lermitage.intellij.battery.status;
+package lermitage.intellij.battery.status.core;
 
+import lermitage.intellij.battery.status.core.BatteryUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

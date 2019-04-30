@@ -1,7 +1,8 @@
-package lermitage.intellij.battery.status;
+package lermitage.intellij.battery.status.statusbar;
 
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
+import lermitage.intellij.battery.status.core.BatteryUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +24,7 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
     }
     
     @NotNull
-    //@Override -> this method is deprecated: comment annotation to make it compatible with future IDE builds
+    //@Override IMPORTANT getMaxPossibleText() is deprecated: comment Override annotation to make it compatible with future IDE builds
     public String getMaxPossibleText() {
         return "";
     }

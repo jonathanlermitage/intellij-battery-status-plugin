@@ -39,8 +39,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <postStartupActivity implementation="lermitage.intellij.battery.status.BatteryStatusStartupActivity"
-                             id="lermitage.intellij.battery.status.BatteryStatusStartupActivity"
+        <postStartupActivity implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
+                             id="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
                              order="first"/>
     </extensions>
 

@@ -1,4 +1,4 @@
-package lermitage.intellij.battery.status;
+package lermitage.intellij.battery.status.statusbar;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;

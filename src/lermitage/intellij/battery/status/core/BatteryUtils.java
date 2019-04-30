@@ -1,4 +1,4 @@
-package lermitage.intellij.battery.status;
+package lermitage.intellij.battery.status.core;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class BatteryUtils {
+public class BatteryUtils {
     
     private static LocalTime lastCall = LocalTime.now();
     
     @Contract(pure = true)
-    static LocalTime getLastCallTime() {
+    public static LocalTime getLastCallTime() {
         return lastCall;
     }
     
@@ -116,7 +116,7 @@ class BatteryUtils {
     }
     
     @NotNull
-    static String readBatteryStatus() {
+    public static String readBatteryStatus() {
         lastCall = LocalTime.now();
         String batteryStatus;
         String os = System.getProperty("os.name").toUpperCase();
