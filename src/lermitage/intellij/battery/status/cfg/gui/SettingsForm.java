@@ -16,7 +16,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_REFRESH_INTERVAL;
-import static lermitage.intellij.battery.status.cfg.SettingsService.MINIMAL_REFRESH;
+import static lermitage.intellij.battery.status.cfg.SettingsService.MINIMAL_REFRESH_INTERVAL;
 
 public class SettingsForm implements Configurable {
     
@@ -51,7 +51,7 @@ public class SettingsForm implements Configurable {
         refreshRateDefaultBtn.setToolTipText("Reset to " + DEFAULT_REFRESH_INTERVAL + ".");
         
         refreshRateField.setText(Integer.toString(settingsService.getBatteryRefreshIntervalInMs()));
-        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH + " and " + Integer.MAX_VALUE + ".\nChange takes effect at next refresh.");
+        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH_INTERVAL + " and " + Integer.MAX_VALUE + ".\nChange takes effect at next refresh.");
         refreshRateField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 modified = true;
@@ -77,9 +77,9 @@ public class SettingsForm implements Configurable {
     public void apply() {
         try {
             int refreshRate = Integer.parseInt(refreshRateField.getText());
-            if (refreshRate < MINIMAL_REFRESH) {
+            if (refreshRate < MINIMAL_REFRESH_INTERVAL) {
                 JOptionPane.showMessageDialog(refreshRateField,
-                        "Please type an integer value greater or equal to " + MINIMAL_REFRESH + ".", "Bad input", JOptionPane.ERROR_MESSAGE);
+                        "Please type an integer value greater or equal to " + MINIMAL_REFRESH_INTERVAL + ".", "Bad input", JOptionPane.ERROR_MESSAGE);
             } else {
                 settingsService.setBatteryRefreshIntervalInMs(refreshRate);
                 modified = false;
@@ -90,6 +90,7 @@ public class SettingsForm implements Configurable {
         }
     }
     
+    @Override
     public void reset() {
         settingsService.setBatteryRefreshIntervalInMs(settingsService.getBatteryRefreshIntervalInMs());
         refreshRateField.setText(Integer.toString(settingsService.getBatteryRefreshIntervalInMs()));

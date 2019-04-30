@@ -22,7 +22,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     public static final String ID = BatteryStatusWidget.class.getName();
     
     @Contract(pure = true)
-    BatteryStatusWidget(Project project) {
+    public BatteryStatusWidget(Project project) {
         this.project = project;
     }
     
