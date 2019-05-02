@@ -19,7 +19,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.2 (2019/0x/xx)
+      1.2 (2019/05/02)
       <ul>
         <li>Battery Status refresh time is now configurable.</li>
         <li>Click on the Battery Status to refresh it immediately.</li>
