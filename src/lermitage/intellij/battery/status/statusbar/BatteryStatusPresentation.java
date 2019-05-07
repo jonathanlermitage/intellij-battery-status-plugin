@@ -1,11 +1,14 @@
 package lermitage.intellij.battery.status.statusbar;
 
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.util.Consumer;
+import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.BatteryUtils;
+import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,8 +22,8 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
     
     private String lastBatteryStatus = getText();
-    
     private StatusBar statusBar;
+    private SettingsService settingsService;
     
     public BatteryStatusPresentation(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
@@ -29,7 +32,19 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
     @NotNull
     @Override
     public String getText() {
-        lastBatteryStatus = BatteryUtils.readBatteryStatus();
+        if (settingsService == null) {
+            settingsService = ServiceManager.getService(SettingsService.class);
+        }
+        switch (OS.detectOS()) {
+            case WIN:
+                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
+                break;
+            case MACOS:
+                lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand());
+                break;
+            default:
+                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
+        }
         return lastBatteryStatus;
     }
     

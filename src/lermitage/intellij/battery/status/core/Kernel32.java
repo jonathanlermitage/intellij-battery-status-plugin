@@ -16,6 +16,12 @@ import java.util.List;
 @SuppressWarnings({"WeakerAccess", "UnnecessaryInterfaceModifier"})
 public interface Kernel32 extends StdCallLibrary {
     
+    public static final String FIELD_ACLINESTATUS = "AC"; // ACLineStatus
+    public static final String FIELD_BATTERYFLAG = "Flag"; // BatteryFlag
+    public static final String FIELD_BATTERYLIFEPERCENT = "LifePercent"; // BatteryLifePercent
+    public static final String FIELD_BATTERYLIFETIME = "LifeTime"; // BatteryLifeTime
+    public static final String FIELD_BATTERYFULLLIFETIME = "FullLifeTime"; // BatteryFullLifeTime
+    
     public static Kernel32 INSTANCE = getKernel32();
     
     public static Kernel32 getKernel32() {
