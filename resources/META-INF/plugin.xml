@@ -19,7 +19,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.3 (WIP)
+      1.3 (2019/05/07)
       <ul>
         <li>Linux and MacOS: you can customize the command that is used to retrieve battery status.</li>
         <li>Windows: you can choose which battery status fields to display.</li>
