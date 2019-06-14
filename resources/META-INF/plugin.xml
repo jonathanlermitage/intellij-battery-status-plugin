@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
-    <version>1.3</version>
+    <version>1.4</version>
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
@@ -19,6 +19,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.4 (2019/06/14)
+      <ul>
+        <li>Fix <code>java.time.DateTimeException: Invalid value for SecondOfDay (valid values 0 - 86399): 106922</code> error.</li>
+      </ul>
+      <br/>
       1.3 (2019/05/07)
       <ul>
         <li>Linux and MacOS: you can customize the command that is used to retrieve battery status.</li>
