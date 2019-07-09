@@ -20,6 +20,10 @@ public class BatteryUtils {
         return lastCall;
     }
     
+    public static void updateLastCallTime() {
+        lastCall = LocalTime.now();
+    }
+    
     private static List<String> execCommandThenReadLines(String command) throws IOException {
         List<String> chkLines = new ArrayList<>();
         Process chkBat = Runtime.getRuntime().exec(command);
@@ -38,6 +42,7 @@ public class BatteryUtils {
     @NotNull
     @Contract(pure = true)
     public static String readWindowsBatteryStatus(String batteryFields) {
+        updateLastCallTime();
         Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
         int status = Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
         if (status == -2) {
@@ -84,6 +89,7 @@ public class BatteryUtils {
     @NotNull
     @Contract(pure = true)
     public static String readLinuxBatteryStatus(String command) {
+        updateLastCallTime();
         try {
             List<String> chkLines = execCommandThenReadLines(command);
             // output looks like "Battery 0: Discharging, 98%, 05:26:03 remaining" or "Battery 0: Full, 100%", and
@@ -107,6 +113,7 @@ public class BatteryUtils {
     @NotNull
     @Contract(pure = true)
     public static String readMacOSBatteryStatus(String command) {
+        updateLastCallTime();
         try {
             List<String> chkLines = execCommandThenReadLines(command);
             // see http://osxdaily.com/2015/12/10/get-mac-battery-life-info-command-line-os-x/

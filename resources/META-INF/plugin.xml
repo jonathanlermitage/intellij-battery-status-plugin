@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
-    <version>1.4</version>
+    <version>1.5</version>
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
@@ -19,6 +19,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.5 (2019/07/09)
+      <ul>
+        <li>Fix 'Last update' time: it was not refreshed.</li>
+      </ul>
+      <br/>
       1.4 (2019/06/14)
       <ul>
         <li>Fix <code>java.time.DateTimeException: Invalid value for SecondOfDay (valid values 0 - 86399): 106922</code> error.</li>
