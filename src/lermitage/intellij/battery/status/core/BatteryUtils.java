@@ -4,16 +4,24 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class BatteryUtils {
     
     private static LocalTime lastCall = LocalTime.now();
+    
+    public static final String LINUX_COMMAND = "acpi -b";
+    public static final String MACOS_COMMAND = "pmset -g batt";
+    public static final String MACOS_ALTERNATIVE_COMMAND = "pmset -g batt | grep -Eo \"\\d+%\"|echo \"Battery:$(cat -)\"";
     
     @Contract(pure = true)
     public static LocalTime getLastCallTime() {
@@ -90,13 +98,33 @@ public class BatteryUtils {
     @Contract(pure = true)
     public static String readLinuxBatteryStatus(String command) {
         updateLastCallTime();
+        return extractUnixBatteryInformation(command);
+    }
+    
+    @NotNull
+    @Contract(pure = true)
+    public static String readMacOSBatteryStatus(String command, boolean runInTmpScript) {
+        if (runInTmpScript) {
+            return readMacOSBatteryStatusViaTmpScript(command);
+        }
+        return readMacOSBatteryStatus(command);
+    }
+    
+    @NotNull
+    @Contract(pure = true)
+    public static String readMacOSBatteryStatus(String command) {
+        updateLastCallTime();
+        // see http://osxdaily.com/2015/12/10/get-mac-battery-life-info-command-line-os-x/
         try {
             List<String> chkLines = execCommandThenReadLines(command);
-            // output looks like "Battery 0: Discharging, 98%, 05:26:03 remaining" or "Battery 0: Full, 100%", and
-            // may be multi-line if many batteries are detected.
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
                         .filter(s -> s != null && !s.isEmpty())
+                        .map(s -> s
+                                .replace("Now drawing from 'Battery Power'", "Offline")
+                                .replace("Now drawing from 'AC Power'", "Online")
+                                .replace("-InternalBattery-", "Battery ")
+                        )
                         .map(String::trim)
                         .collect(Collectors.joining("; "));
                 if (!status.contains("Battery 1")) {
@@ -112,19 +140,30 @@ public class BatteryUtils {
     
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatus(String command) {
+    public static String readMacOSBatteryStatusViaTmpScript(String command) {
         updateLastCallTime();
         try {
+            File tempScriptFile = File.createTempFile("ij-battery-status-v1_5-macos", ".sh");
+            tempScriptFile.deleteOnExit();
+            if (!tempScriptFile.setExecutable(true)) {
+                return "Battery: can't set '" + tempScriptFile.getAbsolutePath() + "' executable";
+            }
+            Files.write(tempScriptFile.toPath(), ("#!/bin/sh\n\n" + command).getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            return "Battery: can't create temporary script file";
+        }
+        return extractUnixBatteryInformation(command);
+    }
+    
+    @NotNull
+    private static String extractUnixBatteryInformation(String command) {
+        // output looks like "Battery 0: Discharging, 98%, 05:26:03 remaining" or "Battery 0: Full, 100%", and
+        // may be multi-line if many batteries are detected (at least on Linux).
+        try {
             List<String> chkLines = execCommandThenReadLines(command);
-            // see http://osxdaily.com/2015/12/10/get-mac-battery-life-info-command-line-os-x/
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
                         .filter(s -> s != null && !s.isEmpty())
-                        .map(s -> s
-                                .replace("Now drawing from 'Battery Power'", "Offline")
-                                .replace("Now drawing from 'AC Power'", "Online")
-                                .replace("-InternalBattery-", "Battery ")
-                        )
                         .map(String::trim)
                         .collect(Collectors.joining("; "));
                 if (!status.contains("Battery 1")) {

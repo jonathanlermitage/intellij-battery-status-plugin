@@ -5,6 +5,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,14 +22,17 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final int DEFAULT_REFRESH_INTERVAL = 20_000;
     public static final int MINIMAL_REFRESH_INTERVAL = 250;
     public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT + "," + Kernel32.FIELD_ACLINESTATUS + "," + Kernel32.FIELD_BATTERYLIFETIME;
-    public static final String DEFAULT_LINUX_COMMAND = "acpi -b";
-    public static final String DEFAULT_MACOS_COMMAND = "pmset -g batt";
+    public static final String DEFAULT_LINUX_COMMAND = BatteryUtils.LINUX_COMMAND;
+    public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
+    public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
+    public static final Boolean DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED = false;
     
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
     public String windowsBatteryFields;
     public String linuxBatteryCommand;
     public String macosBatteryCommand;
+    public Boolean macosPreferScriptShowBattPercent;
     
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
@@ -80,6 +84,18 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public void setMacosBatteryCommand(String macosBatteryCommand) {
         LOG.info("Battery Status settings updated: will retrieve MacOS battery status via '" + macosBatteryCommand + "' command");
         this.macosBatteryCommand = macosBatteryCommand;
+    }
+    
+    public Boolean getMacosPreferScriptShowBattPercent() {
+        if (macosPreferScriptShowBattPercent == null) {
+            setMacosPreferScriptShowBattPercent(false);
+        }
+        return macosPreferScriptShowBattPercent;
+    }
+    
+    public void setMacosPreferScriptShowBattPercent(Boolean macosPreferScriptShowBattPercent) {
+        LOG.info("Battery Status settings updated: will retrieve MacOS battery status (percent only) via bundled script");
+        this.macosPreferScriptShowBattPercent = macosPreferScriptShowBattPercent;
     }
     
     @Override

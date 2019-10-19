@@ -19,6 +19,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.6 (WIP)
+      <ul>
+        <li>Add an alternative method to get minimal battery information on MacOS.</li>
+      </ul>
+      <br/>
       1.5 (2019/07/09)
       <ul>
         <li>Fix 'Last update' time: it was not refreshed.</li>

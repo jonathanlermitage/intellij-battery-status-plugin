@@ -12,7 +12,7 @@ import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 
@@ -40,7 +40,8 @@ public class BatteryStatusPresentation implements StatusBarWidget.TextPresentati
                 lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
                 break;
             case MACOS:
-                lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand());
+                lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
+                        settingsService.getMacosPreferScriptShowBattPercent());
                 break;
             default:
                 lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
