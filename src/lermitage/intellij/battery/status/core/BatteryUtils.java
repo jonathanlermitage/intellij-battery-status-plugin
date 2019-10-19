@@ -146,8 +146,8 @@ public class BatteryUtils {
         try {
             if (macOSTmpScriptFile == null || !macOSTmpScriptFile.exists()) {
                 macOSTmpScriptFile = File.createTempFile("ij-battery-status-v1_5-macos", ".sh");
+                macOSTmpScriptFile.deleteOnExit();
             }
-            macOSTmpScriptFile.deleteOnExit();
             if (!macOSTmpScriptFile.setExecutable(true)) {
                 return "Battery: can't set '" + macOSTmpScriptFile.getAbsolutePath() + "' executable";
             }
