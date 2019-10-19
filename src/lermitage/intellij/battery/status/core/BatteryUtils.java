@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class BatteryUtils {
     
     private static LocalTime lastCall = LocalTime.now();
+    private static File macOSTmpScriptFile;
     
     public static final String LINUX_COMMAND = "acpi -b";
     public static final String MACOS_COMMAND = "pmset -g batt";
@@ -143,12 +144,14 @@ public class BatteryUtils {
     public static String readMacOSBatteryStatusViaTmpScript(String command) {
         updateLastCallTime();
         try {
-            File tempScriptFile = File.createTempFile("ij-battery-status-v1_5-macos", ".sh");
-            tempScriptFile.deleteOnExit();
-            if (!tempScriptFile.setExecutable(true)) {
-                return "Battery: can't set '" + tempScriptFile.getAbsolutePath() + "' executable";
+            if (macOSTmpScriptFile == null || !macOSTmpScriptFile.exists()) {
+                macOSTmpScriptFile = File.createTempFile("ij-battery-status-v1_5-macos", ".sh");
             }
-            Files.write(tempScriptFile.toPath(), ("#!/bin/sh\n\n" + command).getBytes(StandardCharsets.UTF_8));
+            macOSTmpScriptFile.deleteOnExit();
+            if (!macOSTmpScriptFile.setExecutable(true)) {
+                return "Battery: can't set '" + macOSTmpScriptFile.getAbsolutePath() + "' executable";
+            }
+            Files.write(macOSTmpScriptFile.toPath(), ("#!/bin/sh\n\n" + command).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             return "Battery: can't create temporary script file";
         }
