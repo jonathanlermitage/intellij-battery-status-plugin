@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
-    <version>1.5</version>
+    <version>1.6</version>
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
