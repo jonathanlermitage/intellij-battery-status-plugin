@@ -19,7 +19,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.6 (WIP)
+      1.6 (2019/11/10)
       <ul>
         <li>Add an alternative method to get minimal battery information on MacOS.</li>
       </ul>
