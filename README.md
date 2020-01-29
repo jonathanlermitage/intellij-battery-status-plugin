@@ -3,6 +3,7 @@
 </h1>
 
 <p align="center">
+        <a href="https://travis-ci.org/jonathanlermitage/intellij-battery-status-plugin"><img src="https://travis-ci.org/jonathanlermitage/intellij-battery-status-plugin.svg?branch=master"/></a>
         <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/v/12321-battery-status.svg"/></a>
         <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/d/12321-battery-status.svg"/></a>
         <a href="https://github.com/jonathanlermitage/intellij-battery-status-plugin/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/intellij-battery-status-plugin.svg"/></a>
@@ -17,8 +18,6 @@ Usage:
 * Windows: plugin should work as it.
 * Linux: you must be able to invoke `acpi -b`. Be sure ACPI is installed: on Debian or Ubuntu, type `sudo apt install acpi`.
 * MacOS: plugin should work as it. You must be able to invoke `pmset -g batt`.
-
-Plugin is currently tested on <b>Windows 10</b> and <b>Ubuntu 18.04</b> LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.
 
 Battery status is updated every 20 seconds, configurable in <kbd>File</kbd>, <kbd>Settings...</kbd>, <kbd>Tools</kbd>, <kbd>Battery Status</kbd>.
 

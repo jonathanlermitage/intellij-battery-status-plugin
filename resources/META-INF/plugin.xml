@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
-    <version>1.6</version>
+    <version>REPLACED_BY_GRADLE</version>
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
@@ -13,12 +13,17 @@
         <li>Linux: you must be able to invoke <b>acpi -b</b>. Be sure ACPI is installed: on Debian or Ubuntu, type <b>sudo apt install acpi</b>.</li>
         <li>MacOS: plugin should work as it. You must be able to invoke <b>pmset -g batt</b>.</li>
       </ul>
-      Plugin is currently tested on Windows 10 and Ubuntu 18.04 LTS with both JBR (JetBrains JRE) 8 and 11, on IntelliJ 2017.3 and better.<br/>
-      MacOS: help wanted!<br/><br/>
+      <br/>
       <img src="https://raw.githubusercontent.com/jonathanlermitage/intellij-battery-status-plugin/master/screenshot.png" alt="plugin preview"/>
     ]]></description>
 
     <change-notes><![CDATA[
+      1.7 (WIP)
+      <ul>
+        <li>Internal: migrate project to Gradle.</li>
+        <li>Upgrade minimal IDE version from 173.0 to 183.0 (like IJ 2018.1).</li>
+      </ul>
+      <br/>
       1.6 (2019/11/10)
       <ul>
         <li>Add an alternative method to get minimal battery information on MacOS.</li>
@@ -60,7 +65,7 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.0"/>
+    <idea-version since-build="183.0"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
