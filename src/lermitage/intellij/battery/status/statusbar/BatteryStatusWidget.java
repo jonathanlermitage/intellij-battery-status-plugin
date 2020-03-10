@@ -14,36 +14,35 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("WeakerAccess")
 public class BatteryStatusWidget implements StatusBarWidget {
-    
+
     private Logger LOG = Logger.getInstance(getClass().getName());
-    private Project project;
     private boolean forceExit = false;
-    
+    private StatusBar statusBar;
+
     public static final String ID = BatteryStatusWidget.class.getName();
-    
+
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
-        this.project = project;
+        this.statusBar = WindowManager.getInstance().getStatusBar(project);
     }
-    
+
     @NotNull
     @Override
     public String ID() {
         return ID;
     }
-    
+
     @Nullable
     @Override
-    public WidgetPresentation getPresentation(@NotNull PlatformType type) {
-        return new BatteryStatusPresentation(project);
+    public WidgetPresentation getPresentation() {
+        return new BatteryStatusPresentation(statusBar);
     }
-    
+
     @Override
     public void install(@NotNull StatusBar statusBar) {
-        statusBar.install(WindowManager.getInstance().getStatusBar(project).getFrame());
         ApplicationManager.getApplication().executeOnPooledThread(() -> continuousBatteryStatusWidgetUpdate(statusBar));
     }
-    
+
     private void continuousBatteryStatusWidgetUpdate(StatusBar statusBar) {
         try {
             SettingsService settingsService = ServiceManager.getService(SettingsService.class);
@@ -56,7 +55,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public void dispose() {
         forceExit = true;

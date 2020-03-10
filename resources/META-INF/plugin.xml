@@ -18,10 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.7 (WIP)
+      1.7 (2020/03/10)
       <ul>
         <li>Internal: migrate project to Gradle.</li>
-        <li>Upgrade minimal IDE version from 173.0 to 183.0 (like IJ 2018.1).</li>
+        <li>Make plugin compatible with IDE version 201 EAP.</li>
+        <li>Upgrade minimal IDE version from 173.0 to 201 (like IJ 2020.1).</li>
       </ul>
       <br/>
       1.6 (2019/11/10)
@@ -65,7 +66,7 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="183.0"/>
+    <idea-version since-build="201"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
