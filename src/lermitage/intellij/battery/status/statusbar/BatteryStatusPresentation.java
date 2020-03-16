@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.BatteryUtils;
+import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +58,6 @@ class BatteryStatusPresentation implements StatusBarWidget.TextPresentation {
 
     @Override
     public Consumer<MouseEvent> getClickConsumer() {
-        return mouseEvent -> statusBar.updateWidget(BatteryStatusWidget.ID);
+        return mouseEvent -> statusBar.updateWidget(Globals.PLUGIN_ID);
     }
 }

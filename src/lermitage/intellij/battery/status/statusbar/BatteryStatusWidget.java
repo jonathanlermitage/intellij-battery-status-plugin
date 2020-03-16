@@ -8,6 +8,7 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.WindowManager;
 import lermitage.intellij.battery.status.cfg.SettingsService;
+import lermitage.intellij.battery.status.core.Globals;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +20,6 @@ public class BatteryStatusWidget implements StatusBarWidget {
     private boolean forceExit = false;
     private StatusBar statusBar;
 
-    public static final String ID = BatteryStatusWidget.class.getName();
-
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
@@ -29,7 +28,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @NotNull
     @Override
     public String ID() {
-        return ID;
+        return Globals.PLUGIN_ID;
     }
 
     @Nullable
@@ -48,7 +47,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
             SettingsService settingsService = ServiceManager.getService(SettingsService.class);
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
             while (!forceExit) {
-                statusBar.updateWidget(ID);
+                statusBar.updateWidget(Globals.PLUGIN_ID);
                 Thread.sleep(settingsService.getBatteryRefreshIntervalInMs());
             }
         } catch (Exception e) {

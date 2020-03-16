@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.8 (2020/03/16)
+      <ul>
+        <li>Improve compatibility with IDE version 201 EAP.</li>
+      </ul>
+      <br/>
       1.7 (2020/03/10)
       <ul>
         <li>Internal: migrate project to Gradle.</li>
@@ -75,10 +80,13 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <applicationService serviceImplementation="lermitage.intellij.battery.status.cfg.SettingsService"/>
-        <postStartupActivity implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
-                             id="lermitage.intellij.battery.status.statusbar.BatteryStatusStartupActivity"
-                             order="first"/>
-        <applicationConfigurable instance="lermitage.intellij.battery.status.cfg.gui.SettingsForm" id="LermitageBatteryStatus" displayName="Battery Status" parentId="tools"/>
+        <statusBarWidgetFactory implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"
+                                id="lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"
+                                order="first" />
+        <applicationConfigurable instance="lermitage.intellij.battery.status.cfg.gui.SettingsForm"
+                                 id="LermitageBatteryStatus"
+                                 displayName="Battery Status"
+                                 parentId="tools"/>
     </extensions>
 
     <actions>
