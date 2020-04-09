@@ -29,7 +29,7 @@ public interface Kernel32 extends StdCallLibrary {
     
     public static Kernel32 getKernel32() {
         try {
-            return Native.loadLibrary("Kernel32", Kernel32.class);
+            return Native.load("Kernel32", Kernel32.class);
         } catch (UnsatisfiedLinkError ule) {
             return result -> -2;
         } catch (Throwable e) {
