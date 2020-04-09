@@ -3,9 +3,9 @@ sudo: false
 
 matrix:
   include:
-    #- os: linux
-    #  jdk: openjdk11
-    #  env: IDEA_VERSION=IU-2020.1 <- TODO uncomment when IJ 2020 is released
+    - os: linux
+      jdk: openjdk11
+      env: IDEA_VERSION=IU-2020.1
     - os: linux
       jdk: openjdk11
       env: IDEA_VERSION=IU-LATEST-EAP-SNAPSHOT
