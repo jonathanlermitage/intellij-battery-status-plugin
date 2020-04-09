@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.9 (2020/04/09)
+      <ul>
+        <li>Internal: fix usage of deprecated code from JNA.</li>
+      </ul>
+      <br/>
       1.8 (2020/03/16)
       <ul>
         <li>Improve compatibility with IDE version 201 EAP.</li>
