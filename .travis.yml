@@ -25,4 +25,4 @@ before_install:
   - chmod +x gradlew
   - sudo apt-get -y install acpi # needed to read battery during tests
 
-script: "./gradlew clean buildPlugin test --warning-mode all --info"
+script: "./gradlew clean buildPlugin test --warning-mode all --info -PdownloadIdeaSources=false"
