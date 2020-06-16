@@ -5,7 +5,7 @@
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
-      Display battery status in the Status Bar (updated every 20 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Tools</i> &gt; <i>Battery Status</i>).<br/>
+      Display battery status in the Status Bar (updated every 90 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Tools</i> &gt; <i>Battery Status</i>).<br/>
       Useful if you run IDE in full screen.<br/><br/>
       <u>Requirements</u>:
       <ul>
@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.10 (2020/06/16)
+      <ul>
+        <li>Set default battery status refresh interval to 90s (vs 20s previously).</li>
+      </ul>
+      <br/>
       1.9 (2020/04/09)
       <ul>
         <li>Internal: fix usage of deprecated code from JNA.</li>

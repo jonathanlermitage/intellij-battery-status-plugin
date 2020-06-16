@@ -22,7 +22,7 @@ Usage:
 * Linux: you must be able to invoke `acpi -b`. Be sure ACPI is installed: on Debian or Ubuntu, type `sudo apt install acpi`.
 * MacOS: plugin should work as it. You must be able to invoke `pmset -g batt`.
 
-Battery status is updated every 20 seconds, configurable in <kbd>File</kbd>, <kbd>Settings...</kbd>, <kbd>Tools</kbd>, <kbd>Battery Status</kbd>.
+Battery status is updated every 90 seconds, configurable in <kbd>File</kbd>, <kbd>Settings...</kbd>, <kbd>Tools</kbd>, <kbd>Battery Status</kbd>.
 
 ## Author
 

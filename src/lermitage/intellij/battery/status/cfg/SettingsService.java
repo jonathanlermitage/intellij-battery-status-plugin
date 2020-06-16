@@ -19,7 +19,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     
     private Logger LOG = Logger.getInstance(getClass().getName());
     
-    public static final int DEFAULT_REFRESH_INTERVAL = 20_000;
+    public static final int DEFAULT_REFRESH_INTERVAL = 90_000;
     public static final int MINIMAL_REFRESH_INTERVAL = 250;
     public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT + "," + Kernel32.FIELD_ACLINESTATUS + "," + Kernel32.FIELD_BATTERYLIFETIME;
     public static final String DEFAULT_LINUX_COMMAND = BatteryUtils.LINUX_COMMAND;
