@@ -21,8 +21,8 @@ class BatteryStatusPresentation implements StatusBarWidget.TextPresentation {
         this.statusBar = statusBar;
     }
 
+    private final StatusBar statusBar;
     private SettingsService settingsService;
-    private StatusBar statusBar;
     private String lastBatteryStatus = getText();
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");

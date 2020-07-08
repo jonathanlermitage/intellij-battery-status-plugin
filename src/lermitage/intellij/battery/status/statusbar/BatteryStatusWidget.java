@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("WeakerAccess")
 public class BatteryStatusWidget implements StatusBarWidget {
 
-    private Logger LOG = Logger.getInstance(getClass().getName());
+    private final Logger LOG = Logger.getInstance(getClass().getName());
+    private final StatusBar statusBar;
     private boolean forceExit = false;
-    private StatusBar statusBar;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
