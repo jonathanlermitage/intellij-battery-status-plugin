@@ -14,13 +14,13 @@ public class BatteryUtilsTest {
         OS os = OS.detectOS();
         switch (os) {
             case WIN:
-                battery = BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS);
+                battery = BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS, BatteryLabel.BATTERY_GLYPH);
                 break;
             case MACOS:
-                battery = BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND);
+                battery = BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND, BatteryLabel.BATTERY_GLYPH);
                 break;
             default:
-                battery = BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND);
+                battery = BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND, BatteryLabel.BATTERY_GLYPH);
         }
         System.out.println("battery: " + battery + ", OS: " + os);
         assertFalse(battery.toLowerCase().contains("error"));

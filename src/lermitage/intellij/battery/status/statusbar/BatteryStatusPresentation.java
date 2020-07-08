@@ -5,12 +5,13 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.cfg.SettingsService;
+import lermitage.intellij.battery.status.core.BatteryLabel;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 
@@ -32,16 +33,17 @@ class BatteryStatusPresentation implements StatusBarWidget.TextPresentation {
         if (settingsService == null) {
             settingsService = ServiceManager.getService(SettingsService.class);
         }
+        BatteryLabel batteryLabel = settingsService.getBatteryLabel();
         switch (OS.detectOS()) {
             case WIN:
-                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
+                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields(), batteryLabel);
                 break;
             case MACOS:
                 lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
-                        settingsService.getMacosPreferScriptShowBattPercent());
+                        settingsService.getMacosPreferScriptShowBattPercent(), batteryLabel);
                 break;
             default:
-                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
+                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand(), batteryLabel);
         }
         return lastBatteryStatus;
     }

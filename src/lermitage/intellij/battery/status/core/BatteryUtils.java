@@ -12,45 +12,38 @@ import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class BatteryUtils {
-    
+
     private static LocalTime lastCall = LocalTime.now();
     private static File macOSTmpScriptFile;
-    
+
     public static final String LINUX_COMMAND = "acpi -b";
     public static final String MACOS_COMMAND = "pmset -g batt";
     public static final String MACOS_ALTERNATIVE_COMMAND = "pmset -g batt | grep -Eo \"\\d+%\"|echo \"Battery:$(cat -)\"";
-    
+
     @Contract(pure = true)
     public static LocalTime getLastCallTime() {
         return lastCall;
     }
-    
+
     public static void updateLastCallTime() {
         lastCall = LocalTime.now();
     }
-    
+
     private static List<String> execCommandThenReadLines(String command) throws IOException {
-        List<String> chkLines = new ArrayList<>();
         Process chkBat = Runtime.getRuntime().exec(command);
         try (BufferedReader chkBuf = new BufferedReader(new InputStreamReader(chkBat.getInputStream()))) {
-            String line;
-            do {
-                line = chkBuf.readLine();
-                if (line != null) {
-                    chkLines.add(line);
-                }
-            } while (line != null);
+            return chkBuf.lines().filter(Objects::nonNull).collect(Collectors.toList());
         }
-        return chkLines;
     }
-    
+
     @NotNull
     @Contract(pure = true)
-    public static String readWindowsBatteryStatus(String batteryFields) {
+    public static String readWindowsBatteryStatus(String batteryFields, BatteryLabel batteryLabel) {
         updateLastCallTime();
         Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
         int status = Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
@@ -59,7 +52,7 @@ public class BatteryUtils {
         } else if (status == -1) {
             return "Battery: error";
         }
-        
+
         List<String> batteryields = new ArrayList<>();
         boolean fieldFound = false;
         for (String field : batteryFields.split(",")) {
@@ -88,60 +81,67 @@ public class BatteryUtils {
         if (!fieldFound) {
             return "Battery: no valid field, please edit settings";
         }
-        
-        return "Battery: " + batteryields.stream()
+
+        return batteryLabel.getLabel() + " " + batteryields.stream()
                 .filter(s -> s != null && !s.isEmpty() && !s.equalsIgnoreCase("unknown"))
                 .map(String::trim)
                 .collect(Collectors.joining(", "));
     }
-    
+
     @NotNull
     @Contract(pure = true)
-    public static String readLinuxBatteryStatus(String command) {
+    public static String readLinuxBatteryStatus(String command, BatteryLabel batteryLabel) {
         updateLastCallTime();
-        return extractUnixBatteryInformation(command);
+        return extractUnixBatteryInformation(command, batteryLabel);
     }
-    
+
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatus(String command, boolean runInTmpScript) {
+    public static String readMacOSBatteryStatus(String command, boolean runInTmpScript, BatteryLabel batteryLabel) {
         if (runInTmpScript) {
-            return readMacOSBatteryStatusViaTmpScript(command);
+            return readMacOSBatteryStatusViaTmpScript(command, batteryLabel);
         }
-        return readMacOSBatteryStatus(command);
+        return readMacOSBatteryStatus(command, batteryLabel);
     }
-    
+
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatus(String command) {
+    public static String readMacOSBatteryStatus(String command, BatteryLabel batteryLabel) {
         updateLastCallTime();
         // see http://osxdaily.com/2015/12/10/get-mac-battery-life-info-command-line-os-x/
         try {
             List<String> chkLines = execCommandThenReadLines(command);
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
-                        .filter(s -> s != null && !s.isEmpty())
                         .map(s -> s
                                 .replace("Now drawing from 'Battery Power'", "Offline")
                                 .replace("Now drawing from 'AC Power'", "Online")
                                 .replace("-InternalBattery-", "Battery ")
+                                .replace("present: true", "")
+                                .replace("0:00 remaining", "")
+                                .replaceAll("\\(id=[0-9]+\\)", "")
+                                .replaceAll("\\s{2,}", " ")
                         )
                         .map(String::trim)
+                        .filter(s -> !s.isEmpty())
                         .collect(Collectors.joining("; "));
                 if (!status.contains("Battery 1")) {
                     status = status.replace("Battery 0", "Battery");
                 }
-                return status;
+                if (status.endsWith(";")) {
+                    status = status.substring(0, status.length() - 1);
+                }
+                return status.replaceAll("[Bb]attery[:]?", batteryLabel.getLabel());
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";
         }
         return "Battery: unknown";
     }
-    
+
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatusViaTmpScript(String command) {
+    public static String readMacOSBatteryStatusViaTmpScript(String command, BatteryLabel batteryLabel) {
         updateLastCallTime();
         try {
             if (macOSTmpScriptFile == null || !macOSTmpScriptFile.exists()) {
@@ -155,24 +155,21 @@ public class BatteryUtils {
         } catch (IOException e) {
             return "Battery: can't create temporary script file";
         }
-        return extractUnixBatteryInformation(command);
+        return extractUnixBatteryInformation(command, batteryLabel);
     }
-    
+
     @NotNull
-    private static String extractUnixBatteryInformation(String command) {
+    private static String extractUnixBatteryInformation(String command, BatteryLabel batteryLabel) {
         // output looks like "Battery 0: Discharging, 98%, 05:26:03 remaining" or "Battery 0: Full, 100%", and
         // may be multi-line if many batteries are detected (at least on Linux).
         try {
             List<String> chkLines = execCommandThenReadLines(command);
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
-                        .filter(s -> s != null && !s.isEmpty())
                         .map(String::trim)
+                        .filter(s -> !s.isEmpty())
                         .collect(Collectors.joining("; "));
-                if (!status.contains("Battery 1")) {
-                    status = status.replace("Battery 0", "Battery");
-                }
-                return status;
+                return status.replaceAll("[Bb]attery [0-9]?[:]?", batteryLabel.getLabel());
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";

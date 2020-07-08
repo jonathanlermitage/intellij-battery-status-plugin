@@ -3,16 +3,28 @@ package lermitage.intellij.battery.status.cfg.gui;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import lermitage.intellij.battery.status.cfg.SettingsService;
+import lermitage.intellij.battery.status.core.BatteryLabel;
+import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
+import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_BATTERY_LABEL;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_LINUX_COMMAND;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_MACOS_COMMAND;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED;
@@ -22,7 +34,7 @@ import static lermitage.intellij.battery.status.cfg.SettingsService.MINIMAL_REFR
 
 public class SettingsForm implements Configurable {
     
-    private SettingsService settingsService;
+    private final SettingsService settingsService;
     private JLabel refreshRateLabel;
     private JPanel mainPane;
     private JTextField refreshRateField;
@@ -35,21 +47,28 @@ public class SettingsForm implements Configurable {
     private JLabel macosCommandLabel;
     private JTextField windowsFieldsFieldSample;
     private JCheckBox macosPreferScriptShowBattPercent;
-    
+    private JLabel battPreviewLabel;
+    private JComboBox<String> battNameSelector;
+
     private boolean modified = false;
+    private static final String PREVIEW_TITLE = "Preview (hit Apply button to see changes): ";
     
     public SettingsForm() {
         this.settingsService = ServiceManager.getService(SettingsService.class);
+        for (BatteryLabel b : BatteryLabel.values()) {
+            battNameSelector.addItem(b.getDesc());
+        }
         resetDefaultsBtn.addActionListener(e -> {
             refreshRateField.setText(Integer.toString(DEFAULT_REFRESH_INTERVAL));
             windowsFieldsField.setText(DEFAULT_WINDOWS_BATTERY_FIELDS);
             linuxCommandField.setText(DEFAULT_LINUX_COMMAND);
             macosCommandField.setText(DEFAULT_MACOS_COMMAND);
             macosPreferScriptShowBattPercent.setSelected(DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED);
+            battNameSelector.setSelectedIndex(DEFAULT_BATTERY_LABEL.getIndex());
             modified = true;
         });
     }
-    
+
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
     public String getDisplayName() {
@@ -74,7 +93,8 @@ public class SettingsForm implements Configurable {
         macosPreferScriptShowBattPercent.setText("<html>Instead, try to show battery percentage only via a bundled script:<br><i>" +
                 SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT + "</i><br>" +
                 "stored in system's temporary directory.");
-        
+        battPreviewLabel.setText(PREVIEW_TITLE);
+
         loadConfig();
         
         DocumentListener docListener = new DocumentListener() {
@@ -112,7 +132,9 @@ public class SettingsForm implements Configurable {
         linuxCommandField.getDocument().addDocumentListener(docListener);
         macosCommandField.getDocument().addDocumentListener(docListener);
         macosPreferScriptShowBattPercent.addComponentListener(componentListener);
-        
+        battNameSelector.addComponentListener(componentListener);
+        previewBatt();
+
         return mainPane;
     }
     
@@ -141,6 +163,8 @@ public class SettingsForm implements Configurable {
         settingsService.setLinuxBatteryCommand(linuxCommandField.getText());
         settingsService.setMacosBatteryCommand(macosCommandField.getText());
         settingsService.setMacosPreferScriptShowBattPercent(macosPreferScriptShowBattPercent.isSelected());
+        settingsService.setBatteryLabel(BatteryLabel.fromIndex(battNameSelector.getSelectedIndex()));
+        previewBatt();
     }
     
     @Override
@@ -150,8 +174,10 @@ public class SettingsForm implements Configurable {
         settingsService.setLinuxBatteryCommand(settingsService.getLinuxBatteryCommand());
         settingsService.setMacosBatteryCommand(settingsService.getMacosBatteryCommand());
         settingsService.setMacosPreferScriptShowBattPercent(settingsService.getMacosPreferScriptShowBattPercent());
+        settingsService.setBatteryLabel(settingsService.getBatteryLabel());
         loadConfig();
         modified = false;
+        previewBatt();
     }
     
     private void loadConfig() {
@@ -160,5 +186,23 @@ public class SettingsForm implements Configurable {
         linuxCommandField.setText(settingsService.getLinuxBatteryCommand());
         macosCommandField.setText(settingsService.getMacosBatteryCommand());
         macosPreferScriptShowBattPercent.setSelected(settingsService.getMacosPreferScriptShowBattPercent());
+        battNameSelector.setSelectedIndex(settingsService.getBatteryLabel().getIndex());
+    }
+
+    private void previewBatt() {
+        BatteryLabel batteryLabel = settingsService.getBatteryLabel();
+        String batteryStatus;
+        switch (OS.detectOS()) {
+            case WIN:
+                batteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields(), batteryLabel);
+                break;
+            case MACOS:
+                batteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
+                        settingsService.getMacosPreferScriptShowBattPercent(), batteryLabel);
+                break;
+            default:
+                batteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand(), batteryLabel);
+        }
+        battPreviewLabel.setText("<html>" + PREVIEW_TITLE + "<b>" +batteryStatus + "</b>&nbsp;</html>");
     }
 }

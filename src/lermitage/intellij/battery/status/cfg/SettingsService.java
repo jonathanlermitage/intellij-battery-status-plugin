@@ -5,6 +5,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import lermitage.intellij.battery.status.core.BatteryLabel;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 )
 public class SettingsService implements PersistentStateComponent<SettingsService> {
     
-    private Logger LOG = Logger.getInstance(getClass().getName());
+    private final Logger LOG = Logger.getInstance(getClass().getName());
     
     public static final int DEFAULT_REFRESH_INTERVAL = 90_000;
     public static final int MINIMAL_REFRESH_INTERVAL = 250;
@@ -26,13 +27,15 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
     public static final Boolean DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED = false;
-    
+    public static final BatteryLabel DEFAULT_BATTERY_LABEL = BatteryLabel.BATTERY_GLYPH;
+
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
     public String windowsBatteryFields;
     public String linuxBatteryCommand;
     public String macosBatteryCommand;
     public Boolean macosPreferScriptShowBattPercent;
+    public BatteryLabel batteryLabel;
     
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
@@ -85,17 +88,28 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         LOG.info("Battery Status settings updated: will retrieve MacOS battery status via '" + macosBatteryCommand + "' command");
         this.macosBatteryCommand = macosBatteryCommand;
     }
-    
+
     public Boolean getMacosPreferScriptShowBattPercent() {
         if (macosPreferScriptShowBattPercent == null) {
             setMacosPreferScriptShowBattPercent(false);
         }
         return macosPreferScriptShowBattPercent;
     }
-    
+
     public void setMacosPreferScriptShowBattPercent(Boolean macosPreferScriptShowBattPercent) {
         LOG.info("Battery Status settings updated: will retrieve MacOS battery status (percent only) via bundled script");
         this.macosPreferScriptShowBattPercent = macosPreferScriptShowBattPercent;
+    }
+
+    public BatteryLabel getBatteryLabel() {
+        if (batteryLabel == null) {
+            setBatteryLabel(DEFAULT_BATTERY_LABEL);
+        }
+        return batteryLabel;
+    }
+
+    public void setBatteryLabel(BatteryLabel batteryLabel) {
+        this.batteryLabel = batteryLabel;
     }
     
     @Override
