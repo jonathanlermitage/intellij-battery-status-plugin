@@ -27,7 +27,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
     public static final Boolean DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED = false;
-    public static final BatteryLabel DEFAULT_BATTERY_LABEL = BatteryLabel.BATTERY_GLYPH;
+    public static final BatteryLabel DEFAULT_BATTERY_LABEL = BatteryLabel.getDefault();
 
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
@@ -104,6 +104,8 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public BatteryLabel getBatteryLabel() {
         if (batteryLabel == null) {
             setBatteryLabel(DEFAULT_BATTERY_LABEL);
+
+
         }
         return batteryLabel;
     }

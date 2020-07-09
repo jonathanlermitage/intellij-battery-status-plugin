@@ -41,4 +41,11 @@ public enum BatteryLabel {
         }
         return SettingsService.DEFAULT_BATTERY_LABEL;
     }
+
+    public static BatteryLabel getDefault() {
+        if (OS.detectOS() == OS.WIN) {
+            return BATTERY_GLYPH;
+        }
+        return FLASH_GLYPH;
+    }
 }
