@@ -1,23 +1,21 @@
 package lermitage.intellij.battery.status.core;
 
+import com.intellij.openapi.util.SystemInfo;
 import org.jetbrains.annotations.NotNull;
 
 public enum OS {
     WIN,
     LINUX,
     MACOS;
-    
+
     private static OS detectedOS;
-    
+
     @NotNull
     public static OS detectOS() {
         if (detectedOS == null) {
-            String os = System.getProperty("os.name").toUpperCase();
-            if (os.contains("WIN")) {
+            if (SystemInfo.isWindows) {
                 detectedOS = WIN;
-            } else if (os.contains("NIX") || os.contains("NUX") || os.contains("AIX")) {
-                detectedOS = LINUX;
-            } else if (os.contains("MAC")) {
+            } else if (SystemInfo.isMac) {
                 detectedOS = MACOS;
             } else {
                 detectedOS = LINUX;
