@@ -24,6 +24,11 @@ Usage:
 
 Battery status is updated every 90 seconds, configurable in <kbd>File</kbd>, <kbd>Settings...</kbd>, <kbd>Tools</kbd>, <kbd>Battery Status</kbd>.
 
+## Build
+
+Install a JDK8+ and Gradle, then run `./gradlew buildPlugin verifyPlugin`. See the ZIP file generated in `build/distributions/`.  
+You can also run plugin in a standalone IDE with `./gradlew runIde`. 
+
 ## Author
 
 Jonathan Lermitage (<jonathan.lermitage@gmail.com>)  
