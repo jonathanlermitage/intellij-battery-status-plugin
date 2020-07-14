@@ -5,7 +5,7 @@
     <vendor email="jonathan.lermitage@gmail.com" url="https://github.com/jonathanlermitage">Jonathan Lermitage</vendor>
 
     <description><![CDATA[
-      Display battery status in the Status Bar (updated every 90 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Tools</i> &gt; <i>Battery Status</i>).<br/>
+      Display battery status in the Status Bar (updated every 90 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>).<br/>
       Useful if you run IDE in full screen.<br/><br/>
       <u>Requirements</u>:
       <ul>
@@ -21,6 +21,7 @@
       1.11 (2020/07/11)
       <ul>
         <li>Improve battery status rendering.</li>
+        <li>Move config panel from <i>Tools</i> to <i>Appearance</i>.</li>
       </ul>
       <br/>
       1.10 (2020/06/16)
@@ -101,7 +102,7 @@
         <applicationConfigurable instance="lermitage.intellij.battery.status.cfg.gui.SettingsForm"
                                  id="LermitageBatteryStatus"
                                  displayName="Battery Status"
-                                 parentId="tools"/>
+                                 parentId="appearance"/>
     </extensions>
 
     <actions>
