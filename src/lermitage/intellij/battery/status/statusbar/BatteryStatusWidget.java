@@ -18,11 +18,13 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
+    private final Project project;
     private boolean forceExit = false;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
+        this.project = project;
     }
 
     @NotNull
@@ -34,7 +36,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @Nullable
     @Override
     public WidgetPresentation getPresentation() {
-        return new BatteryStatusPresentation(statusBar);
+        return new BatteryStatusPresentation(statusBar, project, this);
     }
 
     @Override

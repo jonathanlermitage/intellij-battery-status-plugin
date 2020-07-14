@@ -33,7 +33,7 @@ import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_WIND
 import static lermitage.intellij.battery.status.cfg.SettingsService.MINIMAL_REFRESH_INTERVAL;
 
 public class SettingsForm implements Configurable {
-    
+
     private final SettingsService settingsService;
     private JLabel refreshRateLabel;
     private JPanel mainPane;
@@ -52,7 +52,7 @@ public class SettingsForm implements Configurable {
 
     private boolean modified = false;
     private static final String PREVIEW_TITLE = "Preview (hit Apply button to see changes): ";
-    
+
     public SettingsForm() {
         this.settingsService = ServiceManager.getService(SettingsService.class);
         for (BatteryLabel b : BatteryLabel.values()) {
@@ -67,6 +67,8 @@ public class SettingsForm implements Configurable {
             battNameSelector.setSelectedIndex(DEFAULT_BATTERY_LABEL.getIndex());
             modified = true;
         });
+
+        battNameSelector.setVisible(false); // selector will be removed once battery SVG icon works perfectly
     }
 
     @Nls(capitalization = Nls.Capitalization.Title)
@@ -74,7 +76,7 @@ public class SettingsForm implements Configurable {
     public String getDisplayName() {
         return "Battery Status";
     }
-    
+
     @Nullable
     @Override
     public JComponent createComponent() {
@@ -96,16 +98,16 @@ public class SettingsForm implements Configurable {
         battPreviewLabel.setText(PREVIEW_TITLE);
 
         loadConfig();
-        
+
         DocumentListener docListener = new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
                 modified = true;
             }
-            
+
             public void removeUpdate(DocumentEvent e) {
                 modified = true;
             }
-            
+
             public void insertUpdate(DocumentEvent e) {
                 modified = true;
             }
@@ -114,15 +116,15 @@ public class SettingsForm implements Configurable {
             public void componentResized(ComponentEvent e) {
                 modified = true;
             }
-            
+
             public void componentMoved(ComponentEvent e) {
                 modified = true;
             }
-            
+
             public void componentShown(ComponentEvent e) {
                 modified = true;
             }
-            
+
             public void componentHidden(ComponentEvent e) {
                 modified = true;
             }
@@ -137,12 +139,12 @@ public class SettingsForm implements Configurable {
 
         return mainPane;
     }
-    
+
     @Override
     public boolean isModified() {
         return modified;
     }
-    
+
     @Override
     public void apply() {
         try {
@@ -158,7 +160,7 @@ public class SettingsForm implements Configurable {
             JOptionPane.showMessageDialog(refreshRateField,
                     "Please type an integer value.", "Bad input", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         settingsService.setWindowsBatteryFields(windowsFieldsField.getText());
         settingsService.setLinuxBatteryCommand(linuxCommandField.getText());
         settingsService.setMacosBatteryCommand(macosCommandField.getText());
@@ -166,7 +168,7 @@ public class SettingsForm implements Configurable {
         settingsService.setBatteryLabel(BatteryLabel.fromIndex(battNameSelector.getSelectedIndex()));
         previewBatt();
     }
-    
+
     @Override
     public void reset() {
         settingsService.setBatteryRefreshIntervalInMs(settingsService.getBatteryRefreshIntervalInMs());
@@ -179,7 +181,7 @@ public class SettingsForm implements Configurable {
         modified = false;
         previewBatt();
     }
-    
+
     private void loadConfig() {
         refreshRateField.setText(Integer.toString(settingsService.getBatteryRefreshIntervalInMs()));
         windowsFieldsField.setText(settingsService.getWindowsBatteryFields());
@@ -203,6 +205,6 @@ public class SettingsForm implements Configurable {
             default:
                 batteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand(), batteryLabel);
         }
-        battPreviewLabel.setText("<html>" + PREVIEW_TITLE + "<b>" +batteryStatus + "</b>&nbsp;</html>");
+        battPreviewLabel.setText("<html>" + PREVIEW_TITLE + "<b>" + batteryStatus + "</b>&nbsp;</html>");
     }
 }

@@ -82,7 +82,7 @@ public class BatteryUtils {
             return "Battery: no valid field, please edit settings";
         }
 
-        return batteryLabel.getLabel() + " " + batteryields.stream()
+        return batteryields.stream()
                 .filter(s -> s != null && !s.isEmpty() && !s.equalsIgnoreCase("unknown"))
                 .map(String::trim)
                 .collect(Collectors.joining(", "));
@@ -131,7 +131,7 @@ public class BatteryUtils {
                 if (status.endsWith(";")) {
                     status = status.substring(0, status.length() - 1);
                 }
-                return status.replaceAll("[Bb]attery[:]?", batteryLabel.getLabel());
+                return status.replaceAll("[Bb]attery[:]?", "");
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";
@@ -169,7 +169,7 @@ public class BatteryUtils {
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .collect(Collectors.joining("; "));
-                return status.replaceAll("[Bb]attery [0-9]?[:]?", batteryLabel.getLabel());
+                return status.replaceAll("[Bb]attery [0-9]?[:]?", "");
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";
