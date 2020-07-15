@@ -84,15 +84,19 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
             if (matcher.find()) {
                 String batteryPercentage = matcher.group(1);
                 int batteryPercentageInt = Integer.parseInt(batteryPercentage);
+                String battStatusUppercase = batteryStatus.toUpperCase();
+                String name = battStatusUppercase.contains("OFFLINE") || battStatusUppercase.contains("DISCHARGING") ? "battery" : "online";
+                int charge;
                 if (batteryPercentageInt >= 75) {
-                    return IconLoader.getIcon("/icons/battery75.svg");
+                    charge = 75;
                 } else if (batteryPercentageInt >= 50) {
-                    return IconLoader.getIcon("/icons/battery50.svg");
+                    charge = 55;
                 } else if (batteryPercentageInt >= 25) {
-                    return IconLoader.getIcon("/icons/battery25.svg");
-                } else if (batteryPercentageInt >= 0) {
-                    return IconLoader.getIcon("/icons/battery0.svg");
+                    charge = 25;
+                } else {
+                    charge = 0;
                 }
+                return IconLoader.getIcon("/icons/" + name + charge + ".svg");
             }
             return IconLoader.getIcon("/icons/batterynone.svg");
         }

@@ -120,11 +120,11 @@ public class BatteryUtils {
                                 .replace("present: true", "")
                                 .replace("0:00 remaining", "")
                                 .replaceAll("\\(id=[0-9]+\\)", "")
-                                .replaceAll("\\s{2,}", " ")
+                                .replaceAll("\\s+", " ")
                         )
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
-                        .collect(Collectors.joining("; "));
+                        .collect(Collectors.joining(", "));
                 if (!status.contains("Battery 1")) {
                     status = status.replace("Battery 0", "Battery");
                 }
@@ -168,7 +168,7 @@ public class BatteryUtils {
                 String status = chkLines.stream()
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
-                        .collect(Collectors.joining("; "));
+                        .collect(Collectors.joining(", "));
                 return status.replaceAll("[Bb]attery [0-9]?[:]?", "");
             }
         } catch (Exception e) {
