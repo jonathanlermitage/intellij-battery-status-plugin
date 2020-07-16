@@ -92,7 +92,7 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
                 } else if (batteryPercentageInt >= 75) {
                     charge = 75;
                 } else if (batteryPercentageInt >= 50) {
-                    charge = 55;
+                    charge = 50;
                 } else if (batteryPercentageInt >= 25) {
                     charge = 25;
                 } else {
