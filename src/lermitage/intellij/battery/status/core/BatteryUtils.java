@@ -131,7 +131,10 @@ public class BatteryUtils {
                 if (status.endsWith(";")) {
                     status = status.substring(0, status.length() - 1);
                 }
-                return status.replaceAll("[Bb]attery[:]?", "");
+                return status
+                        .replaceAll("[Bb]attery[:]?", "")
+                        .replaceAll(";", ",")
+                        .replaceAll("\\s+", " ");
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";

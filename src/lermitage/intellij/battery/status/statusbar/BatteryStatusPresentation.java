@@ -87,7 +87,9 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
                 String battStatusUppercase = batteryStatus.toUpperCase();
                 String name = battStatusUppercase.contains("OFFLINE") || battStatusUppercase.contains("DISCHARGING") ? "battery" : "online";
                 int charge;
-                if (batteryPercentageInt >= 75) {
+                if (batteryPercentageInt == 100) {
+                    charge = 100;
+                } else if (batteryPercentageInt >= 75) {
                     charge = 75;
                 } else if (batteryPercentageInt >= 50) {
                     charge = 55;
