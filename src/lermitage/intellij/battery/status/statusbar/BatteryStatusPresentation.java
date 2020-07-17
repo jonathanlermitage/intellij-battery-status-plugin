@@ -5,7 +5,6 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
@@ -14,14 +13,13 @@ import lermitage.intellij.battery.status.core.BatteryLabel;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.OS;
+import lermitage.intellij.battery.status.core.UIUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation, StatusBarWidget.Multiframe {
 
@@ -38,7 +36,6 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
     private String lastBatteryStatus = getSelectedValue();
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-    private final Pattern batteryPercentagePattern = Pattern.compile(".*[^0-9]+([0-9]+)%.*");
 
     @Override
     public String getTooltipText() {
@@ -78,31 +75,7 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
 
     @Override
     public @Nullable Icon getIcon() {
-        String batteryStatus = getSelectedValue();
-        if (batteryStatus != null) {
-            Matcher matcher = batteryPercentagePattern.matcher(" " + batteryStatus);
-            if (matcher.find()) {
-                String batteryPercentage = matcher.group(1);
-                int batteryPercentageInt = Integer.parseInt(batteryPercentage);
-                String battStatusUppercase = batteryStatus.toUpperCase();
-                String name = battStatusUppercase.contains("OFFLINE") || battStatusUppercase.contains("DISCHARGING") ? "battery" : "online";
-                int charge;
-                if (batteryPercentageInt >= 97) {
-                    charge = 100;
-                } else if (batteryPercentageInt >= 75) {
-                    charge = 75;
-                } else if (batteryPercentageInt >= 50) {
-                    charge = 50;
-                } else if (batteryPercentageInt >= 25) {
-                    charge = 25;
-                } else {
-                    charge = 0;
-                }
-                return IconLoader.getIcon("/icons/" + name + charge + ".svg");
-            }
-            return IconLoader.getIcon("/icons/batterynone.svg");
-        }
-        return null;
+        return UIUtils.getIconByBatteryStatusText(getSelectedValue());
     }
 
     @Override
