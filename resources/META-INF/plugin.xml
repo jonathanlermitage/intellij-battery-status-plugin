@@ -18,7 +18,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.12 (WIP)
+      1.12 (2020/07/18)
       <ul>
         <li>Improve battery status rendering with colorized SVG icons.</li>
         <li>Move config panel from <i>Tools</i> to <i>Appearance</i>.</li>
