@@ -12,8 +12,8 @@ jobs:
           java-version: 11.x.x
       - name: Build the plugin using Gradle
         run: ./gradlew buildPlugin -PdownloadIdeaSources=false
-      - uses: thepieterdc/intellij-plugin-verifier-action@v1.1.2
+      - uses: ChrisCarini/intellij-platform-plugin-verifier-action@v1.0.3
         with:
-          plugin: '/home/runner/work/intellij-battery-status-plugin/intellij-battery-status-plugin/build/distributions/*'
-          versions: |
-            2020.1
+          ide-versions: |
+            ideaIC:2020.1
+            ideaIU:2020.1
