@@ -1,4 +1,4 @@
-# see https://github.com/marketplace/actions/intellij-plugin-verifier
+# see https://github.com/ChrisCarini/intellij-platform-plugin-verifier-action
 name: Plugin compatibility
 on: [push, pull_request]
 jobs:
