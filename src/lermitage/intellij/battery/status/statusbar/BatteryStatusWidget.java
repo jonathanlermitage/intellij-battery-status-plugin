@@ -56,7 +56,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
                 Thread.sleep(settingsService.getBatteryRefreshIntervalInMs());
             }
         } catch (InterruptedException e) {
-            LOG.warn("App disposed, forced update thread interuption.");
+            LOG.info("App disposed, forced update thread interuption.");
         } catch (Exception e) {
             e.printStackTrace();
         }
