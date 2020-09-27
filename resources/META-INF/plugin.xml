@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.13 (2020/09/27)
+      <ul>
+        <li>Internal: terminate battery info thread faster on app disposal.</li>
+      </ul>
+      <br/>
       1.12 (2020/07/18)
       <ul>
         <li>Improve battery status rendering with colorized SVG icons.</li>
