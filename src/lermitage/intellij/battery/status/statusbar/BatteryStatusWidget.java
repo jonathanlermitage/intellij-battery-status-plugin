@@ -20,6 +20,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     private final StatusBar statusBar;
     private final Project project;
     private boolean forceExit = false;
+    private Thread updateThread = null;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
@@ -46,12 +47,16 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     private void continuousBatteryStatusWidgetUpdate(StatusBar statusBar) {
         try {
+            updateThread = Thread.currentThread();
+            LOG.info("Registered updateThread " + updateThread.getId());
             SettingsService settingsService = ServiceManager.getService(SettingsService.class);
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
             while (!forceExit) {
                 statusBar.updateWidget(Globals.PLUGIN_ID);
                 Thread.sleep(settingsService.getBatteryRefreshIntervalInMs());
             }
+        } catch (InterruptedException e) {
+            LOG.warn("App disposed, forced update thread interuption.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,5 +65,9 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @Override
     public void dispose() {
         forceExit = true;
+        if (updateThread != null && !updateThread.isInterrupted()) {
+            LOG.info("Interrupting updateThread " + updateThread.getId());
+            updateThread.interrupt();
+        }
     }
 }
