@@ -21,10 +21,7 @@ public interface Kernel32 extends StdCallLibrary {
     public static final String FIELD_BATTERYLIFEPERCENT = "LifePercent"; // BatteryLifePercent
     public static final String FIELD_BATTERYLIFETIME = "LifeTime"; // BatteryLifeTime
     public static final String FIELD_BATTERYFULLLIFETIME = "FullLifeTime"; // BatteryFullLifeTime
-    
-    public static long MAX_BATT_LIFE = 86399;
-    public static LocalTime MAX_BATT_LIFE_DATE = LocalTime.ofSecondOfDay(MAX_BATT_LIFE);
-    
+
     public static Kernel32 INSTANCE = getKernel32();
     
     public static Kernel32 getKernel32() {
@@ -104,8 +101,13 @@ public interface Kernel32 extends StdCallLibrary {
             if (BatteryLifeTime == -1) {
                 return "Unknown";
             } else {
-                if (BatteryLifeTime > MAX_BATT_LIFE) { // fix java.time.DateTimeException: Invalid value for SecondOfDay (valid values 0 - 86399): 106922
-                    return "more than " + timeFormat.format(MAX_BATT_LIFE_DATE) + " remaining";
+                if (BatteryLifeTime > 86400) { // fix java.time.DateTimeException: Invalid value for SecondOfDay (valid values 0 - 86399): 106922
+                    int nbDays = BatteryLifeTime / 86400;
+                    int batteryLifeTimeMinusDays = BatteryLifeTime - (nbDays * 86400);
+                    if (batteryLifeTimeMinusDays > 0) {
+                        return nbDays + "d " + timeFormat.format(LocalTime.ofSecondOfDay(batteryLifeTimeMinusDays)) + " remaining";
+                    }
+                    return nbDays + "d remaining";
                 }
                 return timeFormat.format(LocalTime.ofSecondOfDay(BatteryLifeTime)) + " remaining";
             }
