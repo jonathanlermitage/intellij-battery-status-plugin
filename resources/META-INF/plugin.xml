@@ -18,6 +18,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.14 (WIP)
+      <ul>
+        <li>Add a new icons set for battery levels. You can choose your prefered icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
+        <li>Internal: rework log levels.</li>
+      </ul>
+      <br/>
       1.13 (2020/09/27)
       <ul>
         <li>Internal: terminate battery info thread faster on app disposal.</li>

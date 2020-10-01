@@ -9,7 +9,6 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.cfg.SettingsService;
-import lermitage.intellij.battery.status.core.BatteryLabel;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.OS;
@@ -58,24 +57,23 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
         if (settingsService == null) {
             settingsService = ServiceManager.getService(SettingsService.class);
         }
-        BatteryLabel batteryLabel = settingsService.getBatteryLabel();
         switch (OS.detectOS()) {
             case WIN:
-                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields(), batteryLabel);
+                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
                 break;
             case MACOS:
                 lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
-                        settingsService.getMacosPreferScriptShowBattPercent(), batteryLabel);
+                        settingsService.getMacosPreferScriptShowBattPercent());
                 break;
             default:
-                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand(), batteryLabel);
+                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
         }
         return lastBatteryStatus;
     }
 
     @Override
     public @Nullable Icon getIcon() {
-        return UIUtils.getIconByBatteryStatusText(getSelectedValue());
+        return UIUtils.getIconByBatteryStatusText(getSelectedValue(), settingsService.getIconsSet());
     }
 
     @Override

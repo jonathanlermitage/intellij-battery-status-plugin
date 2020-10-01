@@ -11,7 +11,7 @@ public class UIUtils {
 
     private static final Pattern BATTERY_PERCENTAGE_PATTERN = Pattern.compile(".*[^0-9]+([0-9]+)%.*");
 
-    public static @Nullable Icon getIconByBatteryStatusText(@Nullable String batteryStatusTxt) {
+    public static @Nullable Icon getIconByBatteryStatusText(@Nullable String batteryStatusTxt, Integer iconsSet) {
         if (batteryStatusTxt != null) {
             Matcher matcher = BATTERY_PERCENTAGE_PATTERN.matcher(" " + batteryStatusTxt);
             if (matcher.find()) {
@@ -31,9 +31,9 @@ public class UIUtils {
                 } else {
                     charge = 0;
                 }
-                return IconLoader.getIcon("/icons/" + name + charge + ".svg");
+                return IconLoader.getIcon("/icons/set" + iconsSet + "/" + name + charge + ".svg");
             }
-            return IconLoader.getIcon("/icons/batterynone.svg");
+            return IconLoader.getIcon("/icons/set" + iconsSet + "/batterynone.svg");
         }
         return null;
     }

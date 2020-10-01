@@ -43,7 +43,7 @@ public class BatteryUtils {
 
     @NotNull
     @Contract(pure = true)
-    public static String readWindowsBatteryStatus(String batteryFields, BatteryLabel batteryLabel) {
+    public static String readWindowsBatteryStatus(String batteryFields) {
         updateLastCallTime();
         Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
         int status = Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
@@ -90,23 +90,23 @@ public class BatteryUtils {
 
     @NotNull
     @Contract(pure = true)
-    public static String readLinuxBatteryStatus(String command, BatteryLabel batteryLabel) {
+    public static String readLinuxBatteryStatus(String command) {
         updateLastCallTime();
-        return extractUnixBatteryInformation(command, batteryLabel);
+        return extractUnixBatteryInformation(command);
     }
 
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatus(String command, boolean runInTmpScript, BatteryLabel batteryLabel) {
+    public static String readMacOSBatteryStatus(String command, boolean runInTmpScript) {
         if (runInTmpScript) {
-            return readMacOSBatteryStatusViaTmpScript(command, batteryLabel);
+            return readMacOSBatteryStatusViaTmpScript(command);
         }
-        return readMacOSBatteryStatus(command, batteryLabel);
+        return readMacOSBatteryStatus(command);
     }
 
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatus(String command, BatteryLabel batteryLabel) {
+    public static String readMacOSBatteryStatus(String command) {
         updateLastCallTime();
         // see http://osxdaily.com/2015/12/10/get-mac-battery-life-info-command-line-os-x/
         try {
@@ -144,7 +144,7 @@ public class BatteryUtils {
 
     @NotNull
     @Contract(pure = true)
-    public static String readMacOSBatteryStatusViaTmpScript(String command, BatteryLabel batteryLabel) {
+    public static String readMacOSBatteryStatusViaTmpScript(String command) {
         updateLastCallTime();
         try {
             if (macOSTmpScriptFile == null || !macOSTmpScriptFile.exists()) {
@@ -158,11 +158,11 @@ public class BatteryUtils {
         } catch (IOException e) {
             return "Battery: can't create temporary script file";
         }
-        return extractUnixBatteryInformation(command, batteryLabel);
+        return extractUnixBatteryInformation(command);
     }
 
     @NotNull
-    private static String extractUnixBatteryInformation(String command, BatteryLabel batteryLabel) {
+    private static String extractUnixBatteryInformation(String command) {
         // output looks like "Battery 0: Discharging, 98%, 05:26:03 remaining" or "Battery 0: Full, 100%", and
         // may be multi-line if many batteries are detected (at least on Linux).
         try {

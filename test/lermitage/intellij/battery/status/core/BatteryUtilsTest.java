@@ -7,20 +7,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BatteryUtilsTest {
-    
+
     @Test
     public void read_battery_status() {
         String battery;
         OS os = OS.detectOS();
         switch (os) {
             case WIN:
-                battery = BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS, BatteryLabel.BATTERY_GLYPH);
+                battery = BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS);
                 break;
             case MACOS:
-                battery = BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND, BatteryLabel.BATTERY_GLYPH);
+                battery = BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND);
                 break;
             default:
-                battery = BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND, BatteryLabel.BATTERY_GLYPH);
+                battery = BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND);
         }
         System.out.println("battery: " + battery + ", OS: " + os);
         assertFalse(battery.toLowerCase().contains("error"));

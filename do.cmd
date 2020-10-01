@@ -14,5 +14,6 @@ if [%1] == [fixgit] (
   git update-index --chmod=+x gradlew
 )
 if [%1] == [svgo] (
-  svgo --folder=resources/icons/ --multipass --config=svgo.yml
+  svgo --folder=resources/icons/set1/ --multipass --config=svgo.yml
+  svgo --folder=resources/icons/set2/ --multipass --config=svgo.yml
 )

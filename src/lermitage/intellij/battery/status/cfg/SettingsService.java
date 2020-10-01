@@ -5,7 +5,6 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import lermitage.intellij.battery.status.core.BatteryLabel;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
     public static final Boolean DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED = false;
-    public static final BatteryLabel DEFAULT_BATTERY_LABEL = BatteryLabel.getDefault();
+    public static final Integer DEFAULT_ICONS_SET = 0;
 
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
@@ -35,7 +34,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public String linuxBatteryCommand;
     public String macosBatteryCommand;
     public Boolean macosPreferScriptShowBattPercent;
-    public BatteryLabel batteryLabel;
+    public Integer iconsSet;
     
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
@@ -47,7 +46,19 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         }
         return batteryRefreshIntervalInMs;
     }
-    
+
+    public Integer getIconsSet() {
+        if (iconsSet == null) {
+            setIconsSet(DEFAULT_ICONS_SET);
+        }
+        return iconsSet;
+    }
+
+    public void setIconsSet(Integer iconsSet) {
+        LOG.info("Battery Status settings updated: will use '" + iconsSet + "' icons set");
+        this.iconsSet = iconsSet;
+    }
+
     public void setBatteryRefreshIntervalInMs(Integer batteryRefreshIntervalInMs) {
         LOG.info("Battery Status settings updated: will refresh battery status every " + batteryRefreshIntervalInMs + " ms");
         this.batteryRefreshIntervalInMs = batteryRefreshIntervalInMs;
@@ -101,19 +112,6 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         this.macosPreferScriptShowBattPercent = macosPreferScriptShowBattPercent;
     }
 
-    public BatteryLabel getBatteryLabel() {
-        if (batteryLabel == null) {
-            setBatteryLabel(DEFAULT_BATTERY_LABEL);
-
-
-        }
-        return batteryLabel;
-    }
-
-    public void setBatteryLabel(BatteryLabel batteryLabel) {
-        this.batteryLabel = batteryLabel;
-    }
-    
     @Override
     public SettingsService getState() {
         return this;
