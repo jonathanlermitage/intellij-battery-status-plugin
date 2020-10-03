@@ -58,6 +58,7 @@ public class SettingsForm implements Configurable {
         this.settingsService = ServiceManager.getService(SettingsService.class);
         iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet0.png"));
         iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet1.png"));
+        iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet2.png"));
         resetDefaultsBtn.addActionListener(e -> {
             refreshRateField.setText(Integer.toString(DEFAULT_REFRESH_INTERVAL));
             windowsFieldsField.setText(DEFAULT_WINDOWS_BATTERY_FIELDS);
