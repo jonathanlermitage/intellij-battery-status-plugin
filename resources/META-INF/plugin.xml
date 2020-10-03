@@ -18,9 +18,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.14 (WIP)
+      1.14 (2020/10/03)
       <ul>
-        <li>Add a new icons set for battery levels. You can choose your prefered icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
+        <li>Add two new icons set for battery levels. You can choose your prefered icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
         <li>MS Windows: display battery life time with number of days when greater than 23:59:59.</li>
         <li>Internal: rework log levels.</li>
       </ul>
