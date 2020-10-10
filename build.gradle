@@ -44,6 +44,10 @@ intellij {
     version ideaVersion
 }
 
+runIde {
+    jvmArgs '-Xms768m', '-Xmx2048m', '--add-exports', 'java.base/jdk.internal.vm=ALL-UNNAMED'
+}
+
 repositories {
     mavenCentral()
 }
