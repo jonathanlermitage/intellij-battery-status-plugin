@@ -6,7 +6,6 @@
 </h1>
 
 <p align="center">
-        <a href="https://travis-ci.org/jonathanlermitage/intellij-battery-status-plugin"><img src="https://travis-ci.org/jonathanlermitage/intellij-battery-status-plugin.svg?branch=master"/></a>
         <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/v/12321-battery-status.svg"/></a>
         <a href="https://plugins.jetbrains.com/plugin/12321-battery-status"><img src="https://img.shields.io/jetbrains/plugin/d/12321-battery-status.svg"/></a>
         <a href="https://github.com/jonathanlermitage/intellij-battery-status-plugin/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/intellij-battery-status-plugin.svg"/></a>
