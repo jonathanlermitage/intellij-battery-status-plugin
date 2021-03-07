@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.15 (2021/03/07)
+      <ul>
+        <li>Fix usage of a deprecated API. Will prevent possible issues with future IDE releases.</li>
+      </ul>
+      <br/>
       1.14 (2020/10/03)
       <ul>
         <li>Add two new icons set for battery levels. You can choose your prefered icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
