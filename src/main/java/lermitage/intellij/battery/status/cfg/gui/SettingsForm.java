@@ -3,6 +3,7 @@ package lermitage.intellij.battery.status.cfg.gui;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.util.IconLoader;
+import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
@@ -167,6 +168,7 @@ public class SettingsForm implements Configurable {
         settingsService.setMacosPreferScriptShowBattPercent(macosPreferScriptShowBattPercent.isSelected());
         settingsService.setIconsSet(iconsSetSelector.getSelectedIndex());
         previewBatt();
+        IJUtils.refreshOpenedProjects();
     }
 
     @Override

@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.16 (2021/03/26)
+      <ul>
+        <li>Refresh the status bar immediately on settings update.</li>
+      </ul>
+      <br/>
       1.15 (2021/03/07)
       <ul>
         <li>Fix usage of a deprecated API. Will prevent possible issues with future IDE releases.</li>
