@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>lermitage.intellij.battery.status</id>
     <name>Battery Status</name>
     <version>REPLACED_BY_GRADLE</version>
@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.17 (2021/05/24)
+      <ul>
+        <li>Plugin now requires IDE restart on install. This is a workaround for a bug in IJ that resets plugin preferences on plugin update.</li>
+      </ul>
+      <br/>
       1.16 (2021/03/26)
       <ul>
         <li>Refresh the status bar immediately on settings update.</li>
