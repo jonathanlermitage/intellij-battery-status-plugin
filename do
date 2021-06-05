@@ -50,8 +50,9 @@ for ((cmd = 1; cmd <= $#; cmd++)); do
         ;;
 
     "svgo")
-        svgo --folder=src/main/resources/icons/set1/ --multipass --config=svgo.yml
-        svgo --folder=src/main/resources/icons/set2/ --multipass --config=svgo.yml
+        svgo --folder=src/main/resources/icons/set0/
+        svgo --folder=src/main/resources/icons/set1/
+        svgo --folder=src/main/resources/icons/set2/
         ;;
 
     esac
