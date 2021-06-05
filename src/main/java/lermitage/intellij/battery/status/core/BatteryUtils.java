@@ -132,6 +132,7 @@ public class BatteryUtils {
                     status = status.substring(0, status.length() - 1);
                 }
                 return status
+                        .replace(", (no estimate)", "")
                         .replaceAll("[Bb]attery[:]?", "")
                         .replaceAll(";", ",")
                         .replaceAll("\\s+", " ");
@@ -172,7 +173,26 @@ public class BatteryUtils {
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .collect(Collectors.joining(", "));
-                return status.replaceAll("[Bb]attery [0-9]?[:]?", "");
+                status = status.replaceAll("[Bb]attery [0-9]?[:]?", "");
+
+                // observed in a VirtualBox Ubuntu VM only: no (dis)charging rate. The battery info string is a
+                // bit long, trying to shorten it.
+                // Also, I don't trust the "zero" discharging rate. At least, this information is not accurate on
+                // my machine: Windows host and battery discharge + Ubuntu VM that shows a zero rate discharge.
+                // Some power adapters may charge at a lower rate (and the OS will warn you about that), but a
+                // zero rate is very uncommon, that's why I am ignoring it.
+                if (status.toLowerCase().contains(", charging at zero rate - will never fully charge.")) {
+                    status = status.toLowerCase()
+                            .replace(", charging at zero rate - will never fully charge.", "")
+                            .replace("charging,", "Online,");
+                }
+                if (status.toLowerCase().contains(", discharging at zero rate - will never fully discharge.")) {
+                    status = status.toLowerCase()
+                            .replace(", discharging at zero rate - will never fully discharge.", "")
+                            .replace("discharging,", "Offline,");
+                }
+
+                return status;
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";

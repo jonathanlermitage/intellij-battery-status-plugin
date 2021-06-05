@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.18 (2021/06/05)
+      <ul>
+        <li>Improve Linux (ACPI) and macOS support.</li>
+      </ul>
+      <br/>
       1.17 (2021/05/24)
       <ul>
         <li>Plugin now requires IDE restart on install. This is a workaround for a bug in IJ that resets plugin preferences on plugin update.</li>
