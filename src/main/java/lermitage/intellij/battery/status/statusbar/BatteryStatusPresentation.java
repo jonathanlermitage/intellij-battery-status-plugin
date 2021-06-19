@@ -1,13 +1,13 @@
 package lermitage.intellij.battery.status.statusbar;
 
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
+import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
@@ -55,7 +55,7 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
     @Override
     public @Nullable String getSelectedValue() {
         if (settingsService == null) {
-            settingsService = ServiceManager.getService(SettingsService.class);
+            settingsService = IJUtils.getSettingsService();
         }
         switch (OS.detectOS()) {
             case WIN:

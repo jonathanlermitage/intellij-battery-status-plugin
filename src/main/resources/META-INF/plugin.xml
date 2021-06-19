@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.19 (2021/06/20)
+      <ul>
+        <li>Internal: remove usage of code deprecated in IJ 2021.2.</li>
+      </ul>
+      <br/>
       1.18 (2021/06/05)
       <ul>
         <li>Improve Linux (ACPI) and macOS support.</li>

@@ -1,6 +1,5 @@
 package lermitage.intellij.battery.status.cfg.gui;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.util.IconLoader;
 import lermitage.intellij.battery.status.IJUtils;
@@ -56,7 +55,7 @@ public class SettingsForm implements Configurable {
     private static final String PREVIEW_TITLE = "Preview status text (hit Apply button to see changes): ";
 
     public SettingsForm() {
-        this.settingsService = ServiceManager.getService(SettingsService.class);
+        this.settingsService = IJUtils.getSettingsService();
         iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet0.png", SettingsForm.class));
         iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet1.png", SettingsForm.class));
         iconsSetSelector.addItem(IconLoader.getIcon("/icons/setsSelector/iconsSet2.png", SettingsForm.class));

@@ -1,12 +1,12 @@
 package lermitage.intellij.battery.status.statusbar;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.WindowManager;
+import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.Globals;
 import org.jetbrains.annotations.Contract;
@@ -49,7 +49,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
         try {
             updateThread = Thread.currentThread();
             LOG.info("Registered updateThread " + updateThread.getId());
-            SettingsService settingsService = ServiceManager.getService(SettingsService.class);
+            SettingsService settingsService = IJUtils.getSettingsService();
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
             while (!forceExit) {
                 statusBar.updateWidget(Globals.PLUGIN_ID);
