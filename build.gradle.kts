@@ -3,8 +3,8 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     id("java")
     id("idea")
-    id("org.jetbrains.intellij") version "0.7.2" // https://github.com/JetBrains/gradle-intellij-plugin
-    id("com.github.ben-manes.versions") version "0.38.0" // https://github.com/ben-manes/gradle-versions-plugin
+    id("org.jetbrains.intellij") version "1.1.6" // https://github.com/JetBrains/gradle-intellij-plugin
+    id("com.github.ben-manes.versions") version "0.39.0" // https://github.com/ben-manes/gradle-versions-plugin
 }
 
 // Import variables from gradle.properties file
@@ -27,17 +27,17 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 }
 
 intellij {
-    downloadSources = pluginDownloadIdeaSources.toBoolean() && !inCI
-    instrumentCode = pluginInstrumentPluginCode.toBoolean()
-    pluginName = "Battery Status"
-    sandboxDirectory = "${rootProject.projectDir}/.idea-sandbox/${pluginIdeaVersion}"
-    updateSinceUntilBuild = false
-    version = pluginIdeaVersion
+    downloadSources.set(pluginDownloadIdeaSources.toBoolean() && !inCI)
+    instrumentCode.set(pluginInstrumentPluginCode.toBoolean())
+    pluginName.set("Battery Status")
+    sandboxDir.set("${rootProject.projectDir}/.idea-sandbox/${pluginIdeaVersion}")
+    updateSinceUntilBuild.set(false)
+    version.set(pluginIdeaVersion)
 }
 
 tasks {
