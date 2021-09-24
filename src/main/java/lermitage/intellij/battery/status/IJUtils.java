@@ -10,6 +10,7 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.Globals;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class IJUtils {
@@ -47,6 +48,7 @@ public class IJUtils {
         return project != null && !project.isDisposed();
     }
 
+    @NotNull
     public static SettingsService getSettingsService() {
         return ApplicationManager.getApplication().getService(SettingsService.class);
     }

@@ -13,14 +13,16 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 @SuppressWarnings("WeakerAccess")
 public class BatteryStatusWidget implements StatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
     private final Project project;
-    private boolean forceExit = false;
-    private Thread updateThread = null;
+    private Timer timer;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
@@ -47,16 +49,15 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     private void continuousBatteryStatusWidgetUpdate(StatusBar statusBar) {
         try {
-            updateThread = Thread.currentThread();
-            LOG.info("Registered updateThread " + updateThread.getId());
             SettingsService settingsService = IJUtils.getSettingsService();
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
-            while (!forceExit) {
-                statusBar.updateWidget(Globals.PLUGIN_ID);
-                Thread.sleep(settingsService.getBatteryRefreshIntervalInMs());
-            }
-        } catch (InterruptedException e) {
-            LOG.info("App disposed, forced updateThread interuption.");
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    statusBar.updateWidget(Globals.PLUGIN_ID);
+                }
+            }, 0, settingsService.getBatteryRefreshIntervalInMs());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,10 +65,9 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     @Override
     public void dispose() {
-        forceExit = true;
-        if (updateThread != null && !updateThread.isInterrupted()) {
-            LOG.info("Interrupting updateThread " + updateThread.getId());
-            updateThread.interrupt();
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
         }
     }
 }

@@ -18,6 +18,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.20 (WIP)
+      <ul>
+        <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
+        <li>Minor performance optimization: avoid unnecessary calls to battery status when multiple projects are opened (status is cached for 10s and shared between all opened projects).</li>
+        <li>Minor performance optimization: detect OS only once at startup instead of on every battery status update.</li>
+      </ul>
+      <br/>
       1.19 (2021/06/20)
       <ul>
         <li>Internal: remove usage of code deprecated in IJ 2021.2.</li>
@@ -131,9 +138,9 @@
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="201.6668.113"/>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html#modules-available-in-all-products
          on how to target different products -->
-    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->

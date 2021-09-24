@@ -9,9 +9,9 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
+import lermitage.intellij.battery.status.core.BatteryReader;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
-import lermitage.intellij.battery.status.core.OS;
 import lermitage.intellij.battery.status.core.UIUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,17 +57,7 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
         if (settingsService == null) {
             settingsService = IJUtils.getSettingsService();
         }
-        switch (OS.detectOS()) {
-            case WIN:
-                lastBatteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
-                break;
-            case MACOS:
-                lastBatteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
-                        settingsService.getMacosPreferScriptShowBattPercent());
-                break;
-            default:
-                lastBatteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
-        }
+        lastBatteryStatus = BatteryReader.getBatteryStatus(settingsService);
         return lastBatteryStatus;
     }
 
