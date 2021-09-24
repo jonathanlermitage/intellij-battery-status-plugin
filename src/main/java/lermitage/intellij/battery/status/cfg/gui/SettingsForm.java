@@ -4,9 +4,8 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.util.IconLoader;
 import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
-import lermitage.intellij.battery.status.core.BatteryUtils;
+import lermitage.intellij.battery.status.core.BatteryReader;
 import lermitage.intellij.battery.status.core.Kernel32;
-import lermitage.intellij.battery.status.core.OS;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.ActionListener;
 
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_LINUX_COMMAND;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_MACOS_COMMAND;
@@ -112,29 +110,13 @@ public class SettingsForm implements Configurable {
                 modified = true;
             }
         };
-        ComponentListener componentListener = new ComponentListener() {
-            public void componentResized(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentMoved(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentShown(ComponentEvent e) {
-                modified = true;
-            }
-
-            public void componentHidden(ComponentEvent e) {
-                modified = true;
-            }
-        };
+        ActionListener actionListener = e -> modified = true;
         refreshRateField.getDocument().addDocumentListener(docListener);
         windowsFieldsField.getDocument().addDocumentListener(docListener);
         linuxCommandField.getDocument().addDocumentListener(docListener);
         macosCommandField.getDocument().addDocumentListener(docListener);
-        macosPreferScriptShowBattPercent.addComponentListener(componentListener);
-        iconsSetSelector.addComponentListener(componentListener);
+        macosPreferScriptShowBattPercent.addActionListener(actionListener);
+        iconsSetSelector.addActionListener(actionListener);
         previewBatt();
 
         return mainPane;
@@ -194,17 +176,7 @@ public class SettingsForm implements Configurable {
 
     private void previewBatt() {
         String batteryStatus;
-        switch (OS.detectOS()) {
-            case WIN:
-                batteryStatus = BatteryUtils.readWindowsBatteryStatus(settingsService.getWindowsBatteryFields());
-                break;
-            case MACOS:
-                batteryStatus = BatteryUtils.readMacOSBatteryStatus(settingsService.getMacosBatteryCommand(),
-                        settingsService.getMacosPreferScriptShowBattPercent());
-                break;
-            default:
-                batteryStatus = BatteryUtils.readLinuxBatteryStatus(settingsService.getLinuxBatteryCommand());
-        }
+        batteryStatus = BatteryReader.getBatteryStatus(settingsService);
         battPreviewLabel.setText("<html>" + PREVIEW_TITLE + "<b>" + batteryStatus + "</b>&nbsp;</html>");
     }
 }
