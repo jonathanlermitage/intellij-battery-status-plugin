@@ -88,7 +88,7 @@ public class SettingsForm implements Configurable {
         windowsFieldsFieldSample.setBorder(BorderFactory.createEmptyBorder());
         linuxCommandLabel.setText("<html><b>Linux only:</b> command to retrieve battery status:</html>");
         macosCommandLabel.setText("<html><b>MacOS only:</b> command to retrieve battery status:</html>");
-        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH_INTERVAL + " and " + Integer.MAX_VALUE + ".\nChange takes effect at next refresh.");
+        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH_INTERVAL + " and " + Integer.MAX_VALUE + ".\nChange takes effect after IDE restart.");
         macosPreferScriptShowBattPercent.setText("<html>Instead, try to show battery percentage only via a bundled script:<br><i>" +
                 SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT + "</i><br>" +
                 "stored in system's temporary directory.");
