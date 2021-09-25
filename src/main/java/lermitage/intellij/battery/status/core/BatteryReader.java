@@ -6,11 +6,14 @@ import lermitage.intellij.battery.status.cfg.SettingsService;
 
 import java.time.LocalTime;
 
+import static lermitage.intellij.battery.status.cfg.SettingsService.MINIMAL_REFRESH_INTERVAL;
+
 public class BatteryReader {
 
     private static LocalTime lastCall;
     private static String lastBatteryStatus;
     private final static OS detectedOS = OS.detectOS();
+    private static final int CACHE_DURATION_SEC = MINIMAL_REFRESH_INTERVAL / 1000;
 
     /**
      * Get battery status. Returned message is cached for 10s.
@@ -18,7 +21,7 @@ public class BatteryReader {
      * @return battery status.
      */
     public static synchronized String getBatteryStatus(SettingsService settingsService) {
-        if (lastBatteryStatus != null && lastCall != null && lastCall.plusSeconds(10).isAfter(LocalTime.now())) {
+        if (lastBatteryStatus != null && lastCall != null && lastCall.plusSeconds(CACHE_DURATION_SEC).isAfter(LocalTime.now())) {
             return lastBatteryStatus;
         }
         switch (detectedOS) {

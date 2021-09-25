@@ -20,7 +20,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     private final Logger LOG = Logger.getInstance(getClass().getName());
     
     public static final int DEFAULT_REFRESH_INTERVAL = 90_000;
-    public static final int MINIMAL_REFRESH_INTERVAL = 250;
+    public static final int MINIMAL_REFRESH_INTERVAL = 10_000;
     public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT + "," + Kernel32.FIELD_ACLINESTATUS + "," + Kernel32.FIELD_BATTERYLIFETIME;
     public static final String DEFAULT_LINUX_COMMAND = BatteryUtils.LINUX_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
@@ -41,7 +41,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
         } else if (batteryRefreshIntervalInMs < MINIMAL_REFRESH_INTERVAL) {
             LOG.warn("Battery Status refresh interval is too low (" + batteryRefreshIntervalInMs
-                    + " ms, min value is 250 ms), it will be updated automatically to " + DEFAULT_REFRESH_INTERVAL + " ms");
+                    + " ms, min value is " + MINIMAL_REFRESH_INTERVAL + " ms), it will be updated automatically to " + DEFAULT_REFRESH_INTERVAL + " ms");
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
         }
         return batteryRefreshIntervalInMs;
