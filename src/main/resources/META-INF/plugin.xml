@@ -18,7 +18,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      1.20 (WIP)
+      1.20 (2021/10/09)
       <ul>
         <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
         <li>Minor performance optimization: avoid unnecessary calls to battery status when multiple projects are opened (status is cached for 10s and shared between all opened projects).</li>
