@@ -1,9 +1,6 @@
 package lermitage.intellij.battery.status.statusbar;
 
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.ListPopup;
-import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
@@ -13,24 +10,19 @@ import lermitage.intellij.battery.status.core.BatteryReader;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.UIUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 
-class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation, StatusBarWidget.Multiframe {
+class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
-    public BatteryStatusPresentation(StatusBar statusBar, Project project, Disposable widget) {
+    public BatteryStatusPresentation(StatusBar statusBar) {
         this.statusBar = statusBar;
-        this.project = project;
-        this.widget = widget;
     }
 
     private final StatusBar statusBar;
-    private final Project project;
-    private final Disposable widget;
     private SettingsService settingsService;
     private String lastBatteryStatus = getSelectedValue();
 
@@ -64,24 +56,5 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
     @Override
     public @Nullable Icon getIcon() {
         return UIUtils.getIconByBatteryStatusText(getSelectedValue(), settingsService.getIconsSet());
-    }
-
-    @Override
-    public StatusBarWidget copy() {
-        return new BatteryStatusWidget(project);
-    }
-
-    @Override
-    public @NotNull String ID() {
-        return Globals.PLUGIN_ID;
-    }
-
-    @Override
-    public void install(@NotNull StatusBar statusBar) {
-    }
-
-    @Override
-    public void dispose() {
-        Disposer.dispose(widget);
     }
 }
