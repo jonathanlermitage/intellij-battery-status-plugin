@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.21 (2021/10/13)
+      <ul>
+        <li>Fix battery status not refreshing when the day is changing.</li>
+      </ul>
+      <br/>
       1.20 (2021/10/09)
       <ul>
         <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
