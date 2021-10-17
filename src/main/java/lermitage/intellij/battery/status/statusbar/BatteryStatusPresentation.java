@@ -36,7 +36,7 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
     @Override
     public @Nullable Consumer<MouseEvent> getClickConsumer() {
         // FIXME getClickConsumer() is never called since migration to MultipleTextValuesPresentation + Multiframe
-        return mouseEvent -> statusBar.updateWidget(Globals.PLUGIN_ID);
+        return mouseEvent -> statusBar.updateWidget(Globals.WIDGET_ID);
     }
 
     @Override

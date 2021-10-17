@@ -21,19 +21,17 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
-    private final Project project;
     private Timer timer;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
         this.statusBar = WindowManager.getInstance().getStatusBar(project);
-        this.project = project;
     }
 
     @NotNull
     @Override
     public String ID() {
-        return Globals.PLUGIN_ID;
+        return Globals.WIDGET_ID;
     }
 
     @Nullable
@@ -44,10 +42,15 @@ public class BatteryStatusWidget implements StatusBarWidget {
 
     @Override
     public void install(@NotNull StatusBar statusBar) {
-        ApplicationManager.getApplication().executeOnPooledThread(() -> continuousBatteryStatusWidgetUpdate(statusBar));
+        ApplicationManager.getApplication().executeOnPooledThread(() -> start(statusBar));
     }
 
-    private void continuousBatteryStatusWidgetUpdate(StatusBar statusBar) {
+    public void reload() {
+        dispose();
+        start(statusBar);
+    }
+
+    private void start(StatusBar statusBar) {
         try {
             SettingsService settingsService = IJUtils.getSettingsService();
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
@@ -55,7 +58,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    statusBar.updateWidget(Globals.PLUGIN_ID);
+                    statusBar.updateWidget(Globals.WIDGET_ID);
                 }
             }, 0, settingsService.getBatteryRefreshIntervalInMs());
         } catch (Exception e) {

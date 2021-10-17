@@ -18,6 +18,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.22 (2021/10/17)
+      <ul>
+        <li>You can now change refresh interval without restarting IDE.</li>
+        <li>Remove broken battery status preview in config panel.</li>
+      </ul>
+      <br/>
       1.21 (2021/10/13)
       <ul>
         <li>Fix battery status not refreshing when the day is changing.</li>

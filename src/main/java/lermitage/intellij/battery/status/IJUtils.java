@@ -10,6 +10,7 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.Globals;
+import lermitage.intellij.battery.status.statusbar.BatteryStatusWidget;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,11 @@ public class IJUtils {
             if (view != null) {
                 StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
                 if (statusBar != null) {
-                    statusBar.updateWidget(Globals.PLUGIN_ID);
+                    statusBar.updateWidget(Globals.WIDGET_ID);
+                    BatteryStatusWidget batteryStatusWidget = (BatteryStatusWidget) statusBar.getWidget(Globals.WIDGET_ID);
+                    if (batteryStatusWidget != null) {
+                        batteryStatusWidget.reload();
+                    }
                 }
             }
         }

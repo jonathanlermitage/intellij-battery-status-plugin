@@ -13,7 +13,7 @@ public class BatteryStatusWidgetFactory implements StatusBarWidgetFactory {
     @NotNull
     @Override
     public String getId() {
-        return Globals.PLUGIN_ID;
+        return Globals.WIDGET_ID;
     }
 
     @Nls

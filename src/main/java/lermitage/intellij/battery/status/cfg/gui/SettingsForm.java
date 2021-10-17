@@ -4,7 +4,6 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.util.IconLoader;
 import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
-import lermitage.intellij.battery.status.core.BatteryReader;
 import lermitage.intellij.battery.status.core.Kernel32;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -45,12 +44,10 @@ public class SettingsForm implements Configurable {
     private JLabel macosCommandLabel;
     private JTextField windowsFieldsFieldSample;
     private JCheckBox macosPreferScriptShowBattPercent;
-    private JLabel battPreviewLabel;
     private JComboBox<Icon> iconsSetSelector;
     private JLabel iconsSetSelectorLabel;
 
     private boolean modified = false;
-    private static final String PREVIEW_TITLE = "Preview status text (hit Apply button to see changes): ";
 
     public SettingsForm() {
         this.settingsService = IJUtils.getSettingsService();
@@ -88,11 +85,10 @@ public class SettingsForm implements Configurable {
         windowsFieldsFieldSample.setBorder(BorderFactory.createEmptyBorder());
         linuxCommandLabel.setText("<html><b>Linux only:</b> command to retrieve battery status:</html>");
         macosCommandLabel.setText("<html><b>MacOS only:</b> command to retrieve battery status:</html>");
-        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH_INTERVAL + " and " + Integer.MAX_VALUE + ".\nChange takes effect after IDE restart.");
+        refreshRateField.setToolTipText("Choose a value between " + MINIMAL_REFRESH_INTERVAL + " and " + Integer.MAX_VALUE + ".");
         macosPreferScriptShowBattPercent.setText("<html>Instead, try to show battery percentage only via a bundled script:<br><i>" +
                 SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT + "</i><br>" +
                 "stored in system's temporary directory.");
-        battPreviewLabel.setText(PREVIEW_TITLE);
         iconsSetSelectorLabel.setText("Battery icons set:");
 
         loadConfig();
@@ -117,7 +113,6 @@ public class SettingsForm implements Configurable {
         macosCommandField.getDocument().addDocumentListener(docListener);
         macosPreferScriptShowBattPercent.addActionListener(actionListener);
         iconsSetSelector.addActionListener(actionListener);
-        previewBatt();
 
         return mainPane;
     }
@@ -148,7 +143,6 @@ public class SettingsForm implements Configurable {
         settingsService.setMacosBatteryCommand(macosCommandField.getText());
         settingsService.setMacosPreferScriptShowBattPercent(macosPreferScriptShowBattPercent.isSelected());
         settingsService.setIconsSet(iconsSetSelector.getSelectedIndex());
-        previewBatt();
         IJUtils.refreshOpenedProjects();
     }
 
@@ -162,7 +156,6 @@ public class SettingsForm implements Configurable {
         settingsService.setIconsSet(settingsService.getIconsSet());
         loadConfig();
         modified = false;
-        previewBatt();
     }
 
     private void loadConfig() {
@@ -172,11 +165,5 @@ public class SettingsForm implements Configurable {
         macosCommandField.setText(settingsService.getMacosBatteryCommand());
         macosPreferScriptShowBattPercent.setSelected(settingsService.getMacosPreferScriptShowBattPercent());
         iconsSetSelector.setSelectedIndex(settingsService.getIconsSet());
-    }
-
-    private void previewBatt() {
-        String batteryStatus;
-        batteryStatus = BatteryReader.getBatteryStatus(settingsService);
-        battPreviewLabel.setText("<html>" + PREVIEW_TITLE + "<b>" + batteryStatus + "</b>&nbsp;</html>");
     }
 }
