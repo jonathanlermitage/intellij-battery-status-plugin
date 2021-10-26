@@ -3,7 +3,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 plugins {
     id("java")
     id("idea")
-    id("org.jetbrains.intellij") version "1.1.6" // https://github.com/JetBrains/gradle-intellij-plugin
+    id("org.jetbrains.intellij") version "1.2.1" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
     id("com.github.ben-manes.versions") version "0.39.0" // https://github.com/ben-manes/gradle-versions-plugin
 }
 
@@ -17,6 +17,8 @@ val pluginEnableBuildSearchableOptions: String by project
 
 val inCI = System.getenv("CI") != null
 
+val junitVersion = "5.8.1"
+
 println("Will use IDEA $pluginIdeaVersion and Java $pluginJavaVersion")
 
 group = "lermitage.intellij.battery.status"
@@ -27,17 +29,18 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 intellij {
     downloadSources.set(pluginDownloadIdeaSources.toBoolean() && !inCI)
     instrumentCode.set(pluginInstrumentPluginCode.toBoolean())
     pluginName.set("Battery Status")
-    sandboxDir.set("${rootProject.projectDir}/.idea-sandbox/${pluginIdeaVersion}")
+    sandboxDir.set("${rootProject.projectDir}/.idea-sandbox/${shortIdeVersion(pluginIdeaVersion)}")
     updateSinceUntilBuild.set(false)
     version.set(pluginIdeaVersion)
+
 }
 
 tasks {
@@ -84,5 +87,17 @@ fun isNonStable(version: String): Boolean {
     }
     return listOf("alpha", "Alpha", "ALPHA", "b", "beta", "Beta", "BETA", "rc", "RC", "M", "EA", "pr", "atlassian").any {
         "(?i).*[.-]${it}[.\\d-]*$".toRegex().matches(version)
+    }
+}
+
+/** Return an IDE version string without the optional PATCH number.
+ * In other words, replace IDE-MAJOR-MINOR(-PATCH) by IDE-MAJOR-MINOR. */
+fun shortIdeVersion(version: String): String {
+    val matcher = Regex("[A-Za-z]+[\\-]?[0-9]+[\\.]{1}[0-9]+")
+    return try {
+        matcher.findAll(version).map { it.value }.toList()[0]
+    } catch (e: Exception) {
+        logger.warn("Failed to shorten IDE version $version", e)
+        version
     }
 }
