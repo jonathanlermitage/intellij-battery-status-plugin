@@ -31,9 +31,9 @@ public class UIUtils {
                 } else {
                     charge = 0;
                 }
-                return IconLoader.getIcon("/icons/set" + iconsSet + "/" + name + charge + ".svg", UIUtils.class);
+                return IconLoader.getIcon("/icons/batterystatus/set" + iconsSet + "/" + name + charge + ".svg", UIUtils.class);
             }
-            return IconLoader.getIcon("/icons/set" + iconsSet + "/batterynone.svg", UIUtils.class);
+            return IconLoader.getIcon("/icons/batterystatus/set" + iconsSet + "/batterynone.svg", UIUtils.class);
         }
         return null;
     }
