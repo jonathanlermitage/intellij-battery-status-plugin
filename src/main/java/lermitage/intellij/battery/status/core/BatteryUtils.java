@@ -118,6 +118,7 @@ public class BatteryUtils {
                                 .replace("Now drawing from 'AC Power'", "Online")
                                 .replace("-InternalBattery-", "Battery ")
                                 .replace("present: true", "")
+                                .replace("(no estimate)", "")
                                 .replace("0:00 remaining", "")
                                 .replaceAll("\\(id=[0-9]+\\)", "")
                                 .replaceAll("\\s+", " ")

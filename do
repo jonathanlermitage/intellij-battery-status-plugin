@@ -50,11 +50,7 @@ for ((cmd = 1; cmd <= $#; cmd++)); do
         ;;
 
     "svgo")
-        svgo --folder=src/main/resources/icons/set0/
-        svgo --folder=src/main/resources/icons/set1/
-        svgo --folder=src/main/resources/icons/set2/
-        svgo --folder=src/main/resources/icons/set3/
-        svgo --folder=src/main/resources/icons/set4/
+        svgo --folder=src/main/resources/icons/ --recursive
         ;;
 
     esac

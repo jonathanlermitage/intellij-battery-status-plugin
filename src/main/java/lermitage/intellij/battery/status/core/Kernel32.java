@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * See <a href="https://stackoverflow.com/questions/3434719/how-to-get-the-remaining-battery-life-in-a-windows-system">original code</a> and
- * <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_system_power_status">Microsoft documentation</a>.
+ * <a href="https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-system_power_status">Microsoft documentation</a>.
  */
 @SuppressWarnings({"WeakerAccess", "UnnecessaryInterfaceModifier"})
 public interface Kernel32 extends StdCallLibrary {

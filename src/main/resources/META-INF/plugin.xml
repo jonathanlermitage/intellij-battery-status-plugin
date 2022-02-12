@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.24 (2022/02/12)
+      <ul>
+        <li>Improve macOS support.</li>
+      </ul>
+      <br/>
       1.23 (2022/01/22)
       <ul>
         <li>Add two new icon sets for battery levels. You can choose your preferred icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
