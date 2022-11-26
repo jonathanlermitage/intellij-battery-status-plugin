@@ -37,7 +37,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @Nullable
     @Override
     public WidgetPresentation getPresentation() {
-        return new BatteryStatusPresentation(statusBar);
+        return new BatteryStatusPresentation();
     }
 
     @Override

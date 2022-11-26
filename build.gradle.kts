@@ -2,7 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.4.0" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
+    id("org.jetbrains.intellij") version "1.10.0" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
     id("com.github.ben-manes.versions") version "0.42.0" // https://github.com/ben-manes/gradle-versions-plugin
 }
 
@@ -15,7 +15,7 @@ val pluginJavaVersion: String by project
 
 val inCI = System.getenv("CI") != null
 
-val junitVersion = "5.8.2"
+val junitVersion = "5.9.0"
 
 logger.quiet("Will use IDEA $pluginIdeaVersion and Java $pluginJavaVersion")
 
@@ -29,6 +29,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.1")
 }
 
 intellij {
@@ -71,18 +72,7 @@ tasks {
         }
     }
     runIde {
-        jvmArgs("-Xms128m")
-        jvmArgs("-Xmx1024m")
-        jvmArgs("--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
-        // copy over some JVM args from IntelliJ
-        jvmArgs("-Dide.no.platform.update=true")
-        jvmArgs("-Djdk.attach.allowAttachSelf=true")
-        jvmArgs("-Djdk.module.illegalAccess.silent=true")
-        jvmArgs("-Dsun.io.useCanonCaches=false")
-        jvmArgs("-XX:+UseG1GC")
-        jvmArgs("-XX:CICompilerCount=2")
-        jvmArgs("-XX:ReservedCodeCacheSize=512m")
-        jvmArgs("-XX:SoftRefLRUPolicyMSPerMB=50")
+        jvmArgs = listOf("-Xms768m", "-Xmx2048m", "--add-exports", "java.base/jdk.internal.vm=ALL-UNNAMED")
     }
     buildSearchableOptions {
         enabled = false

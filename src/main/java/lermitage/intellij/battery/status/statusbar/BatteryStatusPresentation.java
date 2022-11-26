@@ -1,14 +1,12 @@
 package lermitage.intellij.battery.status.statusbar;
 
 import com.intellij.openapi.ui.popup.ListPopup;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.BatteryReader;
 import lermitage.intellij.battery.status.core.BatteryUtils;
-import lermitage.intellij.battery.status.core.Globals;
 import lermitage.intellij.battery.status.core.UIUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,11 +16,6 @@ import java.time.format.DateTimeFormatter;
 
 class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
-    public BatteryStatusPresentation(StatusBar statusBar) {
-        this.statusBar = statusBar;
-    }
-
-    private final StatusBar statusBar;
     private SettingsService settingsService;
     private String lastBatteryStatus = getSelectedValue();
 
@@ -33,13 +26,12 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
         return lastBatteryStatus + " -- Last update: " + timeFormat.format(BatteryUtils.getLastCallTime());
     }
 
-    @Override
+    // removed @Override as MultipleTextValuesPresentation.getClickConsumer is scheduled for removal in a future release
     public @Nullable Consumer<MouseEvent> getClickConsumer() {
-        // FIXME getClickConsumer() is never called since migration to MultipleTextValuesPresentation + Multiframe
-        return mouseEvent -> statusBar.updateWidget(Globals.WIDGET_ID);
+        return null;
     }
 
-    @Override
+    // removed @Override as MultipleTextValuesPresentation.getPopupStep is scheduled for removal in a future release
     public @Nullable("null means the widget is unable to show the popup") ListPopup getPopupStep() {
         return null;
     }

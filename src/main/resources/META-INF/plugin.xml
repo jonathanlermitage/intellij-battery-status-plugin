@@ -18,6 +18,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      1.25 (2022/11/26)
+      <ul>
+        <li>Remove usage of deprecated JetBrains API, fix compatibility with future IDE releases.</li>
+      </ul>
+      <br/>
       1.24 (2022/02/12)
       <ul>
         <li>Improve macOS support.</li>
