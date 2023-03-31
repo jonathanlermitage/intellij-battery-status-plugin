@@ -16,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
         storages = @Storage("lermitage-battery-status.xml")
 )
 public class SettingsService implements PersistentStateComponent<SettingsService> {
-    
+
     private final Logger LOG = Logger.getInstance(getClass().getName());
-    
+
     public static final int DEFAULT_REFRESH_INTERVAL = 90_000;
     public static final int MINIMAL_REFRESH_INTERVAL = 10_000;
     public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT + "," + Kernel32.FIELD_ACLINESTATUS + "," + Kernel32.FIELD_BATTERYLIFETIME;
@@ -27,6 +27,8 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
     public static final Boolean DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED = false;
     public static final Integer DEFAULT_ICONS_SET = 0;
+    public static final Integer DEFAULT_LOW_POWER_VALUE = 25;
+    public static final Boolean DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL = false;
 
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
@@ -35,7 +37,9 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public String macosBatteryCommand;
     public Boolean macosPreferScriptShowBattPercent;
     public Integer iconsSet;
-    
+    public Integer lowPowerValue;
+    public Boolean configurePowerSaverBasedOnPowerLevel;
+
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
@@ -63,38 +67,38 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         LOG.info("Battery Status settings updated: will refresh battery status every " + batteryRefreshIntervalInMs + " ms");
         this.batteryRefreshIntervalInMs = batteryRefreshIntervalInMs;
     }
-    
+
     public String getWindowsBatteryFields() {
         if (windowsBatteryFields == null) {
             setWindowsBatteryFields(DEFAULT_WINDOWS_BATTERY_FIELDS);
         }
         return windowsBatteryFields;
     }
-    
+
     public void setWindowsBatteryFields(String windowsBatteryFields) {
         LOG.info("Battery Status settings updated: will retrieve Windows battery status fields '" + windowsBatteryFields + "'");
         this.windowsBatteryFields = windowsBatteryFields;
     }
-    
+
     public String getLinuxBatteryCommand() {
         if (linuxBatteryCommand == null) {
             setLinuxBatteryCommand(DEFAULT_LINUX_COMMAND);
         }
         return linuxBatteryCommand;
     }
-    
+
     public void setLinuxBatteryCommand(String linuxBatteryCommand) {
         LOG.info("Battery Status settings updated: will retrieve Linux battery status via '" + linuxBatteryCommand + "' command");
         this.linuxBatteryCommand = linuxBatteryCommand;
     }
-    
+
     public String getMacosBatteryCommand() {
         if (macosBatteryCommand == null) {
             setMacosBatteryCommand(DEFAULT_MACOS_COMMAND);
         }
         return macosBatteryCommand;
     }
-    
+
     public void setMacosBatteryCommand(String macosBatteryCommand) {
         LOG.info("Battery Status settings updated: will retrieve MacOS battery status via '" + macosBatteryCommand + "' command");
         this.macosBatteryCommand = macosBatteryCommand;
@@ -112,11 +116,33 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         this.macosPreferScriptShowBattPercent = macosPreferScriptShowBattPercent;
     }
 
+    public Integer getLowPowerValue() {
+        if (lowPowerValue == null) {
+            setLowPowerValue(DEFAULT_LOW_POWER_VALUE);
+        }
+        return lowPowerValue;
+    }
+
+    public void setLowPowerValue(Integer lowPowerValue) {
+        this.lowPowerValue = lowPowerValue;
+    }
+
+    public Boolean isConfigurePowerSaverBasedOnPowerLevel() {
+        if (configurePowerSaverBasedOnPowerLevel == null) {
+            setConfigurePowerSaverBasedOnPowerLevel(DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL);
+        }
+        return configurePowerSaverBasedOnPowerLevel;
+    }
+
+    public void setConfigurePowerSaverBasedOnPowerLevel(Boolean configurePowerSaverBasedOnPowerLevel) {
+        this.configurePowerSaverBasedOnPowerLevel = configurePowerSaverBasedOnPowerLevel;
+    }
+
     @Override
     public SettingsService getState() {
         return this;
     }
-    
+
     @Override
     public void loadState(@NotNull SettingsService state) {
         XmlSerializerUtil.copyBean(state, this);

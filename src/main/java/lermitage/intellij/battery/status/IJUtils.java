@@ -2,8 +2,10 @@
 
 package lermitage.intellij.battery.status;
 
+import com.intellij.ide.PowerSaveMode;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.wm.StatusBar;
@@ -51,6 +53,15 @@ public class IJUtils {
      */
     public static boolean isAlive(@Nullable Project project) {
         return project != null && !project.isDisposed();
+    }
+
+    /**
+     * Enable or disable IDE Power Saver feature.
+     */
+    public static void enablePowerSaver(boolean enable) {
+        if (PowerSaveMode.isEnabled() != enable) {
+            ApplicationManager.getApplication().invokeLater(() -> PowerSaveMode.setEnabled(enable), ModalityState.any());
+        }
     }
 
     @NotNull

@@ -2,8 +2,8 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.10.0" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
-    id("com.github.ben-manes.versions") version "0.42.0" // https://github.com/ben-manes/gradle-versions-plugin
+    id("org.jetbrains.intellij") version "1.13.3" // https://github.com/JetBrains/gradle-intellij-plugin and https://lp.jetbrains.com/gradle-intellij-plugin/
+    id("com.github.ben-manes.versions") version "0.46.0" // https://github.com/ben-manes/gradle-versions-plugin
 }
 
 // Import variables from gradle.properties file
@@ -15,7 +15,7 @@ val pluginJavaVersion: String by project
 
 val inCI = System.getenv("CI") != null
 
-val junitVersion = "5.9.0"
+val junitVersion = "5.9.2"
 
 logger.quiet("Will use IDEA $pluginIdeaVersion and Java $pluginJavaVersion")
 
@@ -29,7 +29,7 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.2")
 }
 
 intellij {
@@ -80,7 +80,7 @@ tasks {
 }
 
 fun isNonStable(version: String): Boolean {
-    if (listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().endsWith(it) }) {
+    if (listOf("RELEASE", "FINAL", "GA").any { version.uppercase().endsWith(it) }) {
         return false
     }
     return listOf("alpha", "Alpha", "ALPHA", "b", "beta", "Beta", "BETA", "rc", "RC", "M", "EA", "pr", "atlassian").any {

@@ -17,12 +17,17 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_LINUX_COMMAND;
+import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_LOW_POWER_VALUE;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_MACOS_COMMAND;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED;
 import static lermitage.intellij.battery.status.cfg.SettingsService.DEFAULT_REFRESH_INTERVAL;
@@ -46,12 +51,15 @@ public class SettingsForm implements Configurable {
     private JCheckBox macosPreferScriptShowBattPercent;
     private JComboBox<Icon> iconsSetSelector;
     private JLabel iconsSetSelectorLabel;
+    private JCheckBox drivePowerModeLabelCheckBox;
+    private JSpinner lowBatteryLevelSpinner;
+    private JLabel lowBatteryLevelLabel;
 
     private boolean modified = false;
 
     public SettingsForm() {
         this.settingsService = IJUtils.getSettingsService();
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0; i < 5; i++) {
             iconsSetSelector.addItem(IconLoader.getIcon("/icons/batterystatus/setsSelector/iconsSet" + i + ".png", SettingsForm.class));
         }
         resetDefaultsBtn.addActionListener(e -> {
@@ -61,6 +69,8 @@ public class SettingsForm implements Configurable {
             macosCommandField.setText(DEFAULT_MACOS_COMMAND);
             macosPreferScriptShowBattPercent.setSelected(DEFAULT_MACOS_COMMAND_BATTERY_PERCENT_ENABLED);
             iconsSetSelector.setSelectedIndex(0);
+            drivePowerModeLabelCheckBox.setSelected(DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL);
+            lowBatteryLevelSpinner.setValue(DEFAULT_LOW_POWER_VALUE);
             modified = true;
         });
     }
@@ -90,6 +100,17 @@ public class SettingsForm implements Configurable {
                 SettingsService.DEFAULT_MACOS_COMMAND_BATTERY_PERCENT + "</i><br>" +
                 "stored in system's temporary directory.");
         iconsSetSelectorLabel.setText("Battery icons set:");
+        drivePowerModeLabelCheckBox.setText("Watch battery level to enable/disable IDE's Power Save:");
+        lowBatteryLevelLabel.setText("          Enable Power Save when battery level is lower than %:");
+
+        drivePowerModeLabelCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lowBatteryLevelLabel.setVisible(drivePowerModeLabelCheckBox.isSelected());
+                lowBatteryLevelSpinner.setVisible(drivePowerModeLabelCheckBox.isSelected());
+                modified = true;
+            }
+        });
 
         loadConfig();
 
@@ -107,12 +128,14 @@ public class SettingsForm implements Configurable {
             }
         };
         ActionListener actionListener = e -> modified = true;
+        ChangeListener changeListener = e -> modified = true;
         refreshRateField.getDocument().addDocumentListener(docListener);
         windowsFieldsField.getDocument().addDocumentListener(docListener);
         linuxCommandField.getDocument().addDocumentListener(docListener);
         macosCommandField.getDocument().addDocumentListener(docListener);
         macosPreferScriptShowBattPercent.addActionListener(actionListener);
         iconsSetSelector.addActionListener(actionListener);
+        lowBatteryLevelSpinner.addChangeListener(changeListener);
 
         return mainPane;
     }
@@ -143,6 +166,8 @@ public class SettingsForm implements Configurable {
         settingsService.setMacosBatteryCommand(macosCommandField.getText());
         settingsService.setMacosPreferScriptShowBattPercent(macosPreferScriptShowBattPercent.isSelected());
         settingsService.setIconsSet(iconsSetSelector.getSelectedIndex());
+        settingsService.setConfigurePowerSaverBasedOnPowerLevel(drivePowerModeLabelCheckBox.isSelected());
+        settingsService.setLowPowerValue((int) lowBatteryLevelSpinner.getValue());
         IJUtils.refreshOpenedProjects();
     }
 
@@ -154,6 +179,8 @@ public class SettingsForm implements Configurable {
         settingsService.setMacosBatteryCommand(settingsService.getMacosBatteryCommand());
         settingsService.setMacosPreferScriptShowBattPercent(settingsService.getMacosPreferScriptShowBattPercent());
         settingsService.setIconsSet(settingsService.getIconsSet());
+        settingsService.setConfigurePowerSaverBasedOnPowerLevel(settingsService.isConfigurePowerSaverBasedOnPowerLevel());
+        settingsService.setLowPowerValue(settingsService.getLowPowerValue());
         loadConfig();
         modified = false;
     }
@@ -165,5 +192,9 @@ public class SettingsForm implements Configurable {
         macosCommandField.setText(settingsService.getMacosBatteryCommand());
         macosPreferScriptShowBattPercent.setSelected(settingsService.getMacosPreferScriptShowBattPercent());
         iconsSetSelector.setSelectedIndex(settingsService.getIconsSet());
+        drivePowerModeLabelCheckBox.setSelected(settingsService.isConfigurePowerSaverBasedOnPowerLevel());
+        lowBatteryLevelSpinner.setValue(settingsService.getLowPowerValue());
+        lowBatteryLevelLabel.setVisible(settingsService.isConfigurePowerSaverBasedOnPowerLevel());
+        lowBatteryLevelSpinner.setVisible(settingsService.isConfigurePowerSaverBasedOnPowerLevel());
     }
 }

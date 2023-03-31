@@ -4,6 +4,7 @@ import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,5 +37,16 @@ public class UIUtils {
             return IconLoader.getIcon("/icons/batterystatus/set" + iconsSet + "/batterynone.svg", UIUtils.class);
         }
         return null;
+    }
+
+    public static Optional<Integer> getBatteryChargeLevel(@Nullable String batteryStatusTxt) {
+        if (batteryStatusTxt != null) {
+            Matcher matcher = BATTERY_PERCENTAGE_PATTERN.matcher(" " + batteryStatusTxt);
+            if (matcher.find()) {
+                String batteryPercentage = matcher.group(1);
+                return Optional.of(Integer.parseInt(batteryPercentage));
+            }
+        }
+        return Optional.empty();
     }
 }

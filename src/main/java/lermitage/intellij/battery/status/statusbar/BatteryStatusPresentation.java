@@ -13,11 +13,14 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.Icon;
 import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPresentation {
 
     private SettingsService settingsService;
     private String lastBatteryStatus = getSelectedValue();
+
+    private Integer lastBatteryLevel = 100;
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -42,6 +45,22 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
             settingsService = IJUtils.getSettingsService();
         }
         lastBatteryStatus = BatteryReader.getBatteryStatus(settingsService);
+
+        // enable/disable Power Saver mode if plugin is configured to configure this mode based on power level
+        if (settingsService.isConfigurePowerSaverBasedOnPowerLevel()) {
+
+            if (lastBatteryLevel != null) {
+                Optional<Integer> batteryChargeLevel = UIUtils.getBatteryChargeLevel(lastBatteryStatus);
+                if (batteryChargeLevel.isPresent()) {
+                    int batteryAlertLevel = settingsService.getLowPowerValue();
+                    if (!lastBatteryLevel.equals(batteryChargeLevel.get())) {
+                        IJUtils.enablePowerSaver(batteryChargeLevel.get() < batteryAlertLevel);
+                    }
+                    lastBatteryLevel = batteryAlertLevel;
+                }
+            }
+        }
+
         return lastBatteryStatus;
     }
 
