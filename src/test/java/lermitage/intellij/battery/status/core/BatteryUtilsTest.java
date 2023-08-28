@@ -12,19 +12,14 @@ public class BatteryUtilsTest {
     public void read_battery_status() {
         String battery;
         OS os = OS.detectOS();
-        switch (os) {
-            case WIN:
-                battery = BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS);
-                break;
-            case MACOS:
-                battery = BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND);
-                break;
-            default:
-                battery = BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND);
-        }
+        battery = switch (os) {
+            case WIN -> BatteryUtils.readWindowsBatteryStatus(SettingsService.DEFAULT_WINDOWS_BATTERY_FIELDS);
+            case MACOS -> BatteryUtils.readMacOSBatteryStatus(SettingsService.DEFAULT_MACOS_COMMAND);
+            default -> BatteryUtils.readLinuxBatteryStatus(SettingsService.DEFAULT_LINUX_COMMAND);
+        };
         System.out.println("battery: " + battery + ", OS: " + os);
         assertFalse(battery.toLowerCase().contains("error"));
-        // travis runner has no battery, so ACPI returns "unknown"
+        // CI runner has no battery, so ACPI returns "unknown"
         assertTrue(battery.contains("%") || battery.equalsIgnoreCase("Battery: unknown"));
     }
 }

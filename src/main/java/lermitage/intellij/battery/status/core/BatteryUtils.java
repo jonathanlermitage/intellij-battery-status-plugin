@@ -1,18 +1,24 @@
 package lermitage.intellij.battery.status.core;
 
+import lermitage.intellij.battery.status.IJUtils;
+import lermitage.intellij.battery.status.cfg.SettingsService;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import oshi.SystemInfo;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.PowerSource;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
@@ -83,9 +89,9 @@ public class BatteryUtils {
         }
 
         return batteryields.stream()
-                .filter(s -> s != null && !s.isEmpty() && !s.equalsIgnoreCase("unknown"))
-                .map(String::trim)
-                .collect(Collectors.joining(", "));
+            .filter(s -> s != null && !s.isEmpty() && !s.equalsIgnoreCase("unknown"))
+            .map(String::trim)
+            .collect(Collectors.joining(", "));
     }
 
     @NotNull
@@ -113,19 +119,19 @@ public class BatteryUtils {
             List<String> chkLines = execCommandThenReadLines(command);
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
-                        .map(s -> s
-                                .replace("Now drawing from 'Battery Power'", "Offline")
-                                .replace("Now drawing from 'AC Power'", "Online")
-                                .replace("-InternalBattery-", "Battery ")
-                                .replace("present: true", "")
-                                .replace("(no estimate)", "")
-                                .replace("0:00 remaining", "")
-                                .replaceAll("\\(id=[0-9]+\\)", "")
-                                .replaceAll("\\s+", " ")
-                        )
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .collect(Collectors.joining(", "));
+                    .map(s -> s
+                        .replace("Now drawing from 'Battery Power'", "Offline")
+                        .replace("Now drawing from 'AC Power'", "Online")
+                        .replace("-InternalBattery-", "Battery ")
+                        .replace("present: true", "")
+                        .replace("(no estimate)", "")
+                        .replace("0:00 remaining", "")
+                        .replaceAll("\\(id=[0-9]+\\)", "")
+                        .replaceAll("\\s+", " ")
+                    )
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.joining(", "));
                 if (!status.contains("Battery 1")) {
                     status = status.replace("Battery 0", "Battery");
                 }
@@ -133,10 +139,10 @@ public class BatteryUtils {
                     status = status.substring(0, status.length() - 1);
                 }
                 return status
-                        .replace(", (no estimate)", "")
-                        .replaceAll("[Bb]attery[:]?", "")
-                        .replaceAll(";", ",")
-                        .replaceAll("\\s+", " ");
+                    .replace(", (no estimate)", "")
+                    .replaceAll("[Bb]attery:?", "")
+                    .replaceAll(";", ",")
+                    .replaceAll("\\s+", " ");
             }
         } catch (Exception e) {
             return "Battery: cannot invoke '" + command + "'";
@@ -156,7 +162,7 @@ public class BatteryUtils {
             if (!macOSTmpScriptFile.setExecutable(true)) {
                 return "Battery: can't set '" + macOSTmpScriptFile.getAbsolutePath() + "' executable";
             }
-            Files.write(macOSTmpScriptFile.toPath(), ("#!/bin/sh\n\n" + command).getBytes(StandardCharsets.UTF_8));
+            Files.writeString(macOSTmpScriptFile.toPath(), "#!/bin/sh\n\n" + command);
         } catch (IOException e) {
             return "Battery: can't create temporary script file";
         }
@@ -171,10 +177,10 @@ public class BatteryUtils {
             List<String> chkLines = execCommandThenReadLines(command);
             if (!chkLines.isEmpty()) {
                 String status = chkLines.stream()
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .collect(Collectors.joining(", "));
-                status = status.replaceAll("[Bb]attery [0-9]?[:]?", "");
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.joining(", "));
+                status = status.replaceAll("[Bb]attery [0-9]?:?", "");
 
                 // observed in a VirtualBox Ubuntu VM only: no (dis)charging rate. The battery info string is a
                 // bit long, trying to shorten it.
@@ -184,13 +190,13 @@ public class BatteryUtils {
                 // zero rate is very uncommon, that's why I am ignoring it.
                 if (status.toLowerCase().contains(", charging at zero rate - will never fully charge.")) {
                     status = status.toLowerCase()
-                            .replace(", charging at zero rate - will never fully charge.", "")
-                            .replace("charging,", "Online,");
+                        .replace(", charging at zero rate - will never fully charge.", "")
+                        .replace("charging,", "Online,");
                 }
                 if (status.toLowerCase().contains(", discharging at zero rate - will never fully discharge.")) {
                     status = status.toLowerCase()
-                            .replace(", discharging at zero rate - will never fully discharge.", "")
-                            .replace("discharging,", "Offline,");
+                        .replace(", discharging at zero rate - will never fully discharge.", "")
+                        .replace("discharging,", "Offline,");
                 }
 
                 return status;
@@ -199,5 +205,109 @@ public class BatteryUtils {
             return "Battery: cannot invoke '" + command + "'";
         }
         return "Battery: unknown";
+    }
+
+
+    @NotNull
+    @Contract(pure = true)
+    public static String readBatteryStatusWithOshi() {
+        updateLastCallTime();
+
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hardware = si.getHardware();
+        List<PowerSource> powerSources = hardware.getPowerSources();
+
+        if (!powerSources.isEmpty()) {
+            PowerSource powerSource = powerSources.get(0);
+
+            SettingsService settingsService = IJUtils.getSettingsService();
+            String requestedFields = settingsService.getOshiBatteryFields();
+
+            if (requestedFields.contains(OshiFeatureName.CAPACITY_PERCENT.getLabel())) {
+                float currentCapacity = (float) powerSource.getCurrentCapacity();
+                float maxCapacity = (float) powerSource.getMaxCapacity();
+                String remainingCapacityPercent = Math.round((currentCapacity * 100f) / maxCapacity) + "%";
+                requestedFields = requestedFields.replace(OshiFeatureName.CAPACITY_PERCENT.getLabel(), remainingCapacityPercent);
+            }
+
+            if (requestedFields.contains(OshiFeatureName.AC.getLabel())) {
+                String powerSourceState = powerSource.isPowerOnLine() ? "Online" : "Offline";
+                requestedFields = requestedFields.replace(OshiFeatureName.AC.getLabel(), powerSourceState);
+            }
+
+            boolean containsDischargeTimeLong = requestedFields.contains(OshiFeatureName.DISCHARGE_TIME_LONG.getLabel());
+            if (requestedFields.contains(OshiFeatureName.DISCHARGE_TIME.getLabel()) || containsDischargeTimeLong) {
+                String remainingTimeDischarging = "";
+                if (powerSource.isDischarging()) {
+                    double timeRemainingInstant = powerSource.getTimeRemainingInstant();
+                    if (timeRemainingInstant > 0) {
+                        remainingTimeDischarging = formatSecondsToHumanDuration((long) powerSource.getTimeRemainingInstant());
+                        if (containsDischargeTimeLong) {
+                            remainingTimeDischarging += " remaining";
+                        }
+                    }
+                }
+                if (containsDischargeTimeLong) {
+                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_TIME_LONG.getLabel(), remainingTimeDischarging);
+                } else {
+                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_TIME.getLabel(), remainingTimeDischarging);
+                }
+            }
+
+            boolean containsChargeTimeLong = requestedFields.contains(OshiFeatureName.CHARGE_TIME_LONG.getLabel());
+            if (requestedFields.contains(OshiFeatureName.CHARGE_TIME.getLabel()) || containsChargeTimeLong) {
+                String remainingTimeCharging = "";
+                if (powerSource.isCharging()) {
+                    double timeRemainingInstant = powerSource.getTimeRemainingInstant();
+                    if (timeRemainingInstant > 0) {
+                        remainingTimeCharging = formatSecondsToHumanDuration((long) powerSource.getTimeRemainingInstant());
+                        if (containsChargeTimeLong) {
+                            remainingTimeCharging += " to full charge";
+                        }
+                    }
+                }
+                if (containsChargeTimeLong) {
+                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_TIME_LONG.getLabel(), remainingTimeCharging);
+                } else {
+                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_TIME.getLabel(), remainingTimeCharging);
+                }
+
+            }
+
+            String res = requestedFields.trim();
+            if (res.endsWith(",")) {
+                res = res.substring(0, res.length() - 1).trim();
+            }
+            return res;
+        }
+
+        return "unknown";
+    }
+
+    @NotNull
+    @Contract(pure = true)
+    public static String readBatteryLongDescWithOshi() {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hardware = si.getHardware();
+        List<PowerSource> powerSources = hardware.getPowerSources();
+
+        if (!powerSources.isEmpty()) {
+            return powerSources.get(0).toString();
+        }
+
+        return "unknown";
+    }
+
+    @NotNull
+    private static String formatSecondsToHumanDuration(long totalSeconds) {
+        long durationMillis = TimeUnit.SECONDS.toMillis(totalSeconds);
+        String res = DurationFormatUtils.formatDuration(durationMillis, "HH:mm").replace(":", "hr ") + "m";
+        if (res.startsWith("00")) {
+            res = res.substring(1);
+        }
+        if (res.startsWith("0hr")) {
+            res = res.substring("0hr".length()).trim();
+        }
+        return res;
     }
 }

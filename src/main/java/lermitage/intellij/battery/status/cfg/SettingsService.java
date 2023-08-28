@@ -7,13 +7,14 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import lermitage.intellij.battery.status.core.BatteryUtils;
 import lermitage.intellij.battery.status.core.Kernel32;
+import lermitage.intellij.battery.status.core.OshiFeatureName;
 import org.jetbrains.annotations.NotNull;
 
 // see http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html
 @SuppressWarnings({"WeakerAccess", "unused"})
 @State(
-        name = "BatteryStatusSettings",
-        storages = @Storage("lermitage-battery-status.xml")
+    name = "BatteryStatusSettings",
+    storages = @Storage("lermitage-battery-status.xml")
 )
 public class SettingsService implements PersistentStateComponent<SettingsService> {
 
@@ -21,7 +22,9 @@ public class SettingsService implements PersistentStateComponent<SettingsService
 
     public static final int DEFAULT_REFRESH_INTERVAL = 90_000;
     public static final int MINIMAL_REFRESH_INTERVAL = 10_000;
-    public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT + "," + Kernel32.FIELD_ACLINESTATUS + "," + Kernel32.FIELD_BATTERYLIFETIME;
+    public static final String DEFAULT_WINDOWS_BATTERY_FIELDS = Kernel32.FIELD_BATTERYLIFEPERCENT +
+        "," + Kernel32.FIELD_ACLINESTATUS +
+        "," + Kernel32.FIELD_BATTERYLIFETIME;
     public static final String DEFAULT_LINUX_COMMAND = BatteryUtils.LINUX_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND = BatteryUtils.MACOS_COMMAND;
     public static final String DEFAULT_MACOS_COMMAND_BATTERY_PERCENT = BatteryUtils.MACOS_ALTERNATIVE_COMMAND;
@@ -29,6 +32,10 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final Integer DEFAULT_ICONS_SET = 0;
     public static final Integer DEFAULT_LOW_POWER_VALUE = 25;
     public static final Boolean DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL = false;
+    public static final Boolean DEFAULT_USE_OSHI = false;
+    public static final String DEFAULT_OSHI_BATTERY_FIELDS = OshiFeatureName.CAPACITY_PERCENT.getLabel() +
+        ", " + OshiFeatureName.AC.getLabel() +
+        ", " + OshiFeatureName.DISCHARGE_TIME.getLabel() + OshiFeatureName.CHARGE_TIME.getLabel();
 
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;
@@ -39,13 +46,16 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public Integer iconsSet;
     public Integer lowPowerValue;
     public Boolean configurePowerSaverBasedOnPowerLevel;
+    public Boolean useOshi;
+    public String oshiBatteryFields;
 
     public Integer getBatteryRefreshIntervalInMs() {
         if (batteryRefreshIntervalInMs == null) {
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
         } else if (batteryRefreshIntervalInMs < MINIMAL_REFRESH_INTERVAL) {
             LOG.warn("Battery Status refresh interval is too low (" + batteryRefreshIntervalInMs
-                    + " ms, min value is " + MINIMAL_REFRESH_INTERVAL + " ms), it will be updated automatically to " + DEFAULT_REFRESH_INTERVAL + " ms");
+                + " ms, min value is " + MINIMAL_REFRESH_INTERVAL + " ms), it will be updated automatically to "
+                + DEFAULT_REFRESH_INTERVAL + " ms");
             setBatteryRefreshIntervalInMs(DEFAULT_REFRESH_INTERVAL);
         }
         return batteryRefreshIntervalInMs;
@@ -78,6 +88,17 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public void setWindowsBatteryFields(String windowsBatteryFields) {
         LOG.info("Battery Status settings updated: will retrieve Windows battery status fields '" + windowsBatteryFields + "'");
         this.windowsBatteryFields = windowsBatteryFields;
+    }
+
+    public String getOshiBatteryFields() {
+        if (oshiBatteryFields == null) {
+            setOshiBatteryFields(DEFAULT_OSHI_BATTERY_FIELDS);
+        }
+        return oshiBatteryFields;
+    }
+
+    public void setOshiBatteryFields(String oshiBatteryFields) {
+        this.oshiBatteryFields = oshiBatteryFields;
     }
 
     public String getLinuxBatteryCommand() {
@@ -127,7 +148,7 @@ public class SettingsService implements PersistentStateComponent<SettingsService
         this.lowPowerValue = lowPowerValue;
     }
 
-    public Boolean isConfigurePowerSaverBasedOnPowerLevel() {
+    public Boolean getConfigurePowerSaverBasedOnPowerLevel() {
         if (configurePowerSaverBasedOnPowerLevel == null) {
             setConfigurePowerSaverBasedOnPowerLevel(DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL);
         }
@@ -136,6 +157,17 @@ public class SettingsService implements PersistentStateComponent<SettingsService
 
     public void setConfigurePowerSaverBasedOnPowerLevel(Boolean configurePowerSaverBasedOnPowerLevel) {
         this.configurePowerSaverBasedOnPowerLevel = configurePowerSaverBasedOnPowerLevel;
+    }
+
+    public Boolean getUseOshi() {
+        if (useOshi == null) {
+            setUseOshi(DEFAULT_USE_OSHI);
+        }
+        return useOshi;
+    }
+
+    public void setUseOshi(Boolean useOshi) {
+        this.useOshi = useOshi;
     }
 
     @Override

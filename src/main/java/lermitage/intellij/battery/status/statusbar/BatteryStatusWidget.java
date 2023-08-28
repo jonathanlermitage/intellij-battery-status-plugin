@@ -62,7 +62,7 @@ public class BatteryStatusWidget implements StatusBarWidget {
                 }
             }, 0, settingsService.getBatteryRefreshIntervalInMs());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn(e);
         }
     }
 

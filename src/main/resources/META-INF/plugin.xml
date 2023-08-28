@@ -6,166 +6,11 @@
 
     <description><![CDATA[
       Display battery status in the Status Bar (updated every 90 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>).<br/>
-      Useful if you run IDE in full screen.<br/><br/>
-      <u>Requirements</u>:
-      <ul>
-        <li>Windows: plugin should work as it.</li>
-        <li>Linux: you must be able to invoke <b>acpi -b</b>. Be sure ACPI is installed: on Debian or Ubuntu, type <b>sudo apt install acpi</b>.</li>
-        <li>MacOS: plugin should work as it. You must be able to invoke <b>pmset -g batt</b>.</li>
-      </ul>
+      Useful if you run IDE in full screen.
     ]]></description>
 
-    <change-notes><![CDATA[
-      1.26 (2023/03/31)
-      <ul>
-        <li>Add option to enable or disable IDE's Power Saver mode based on battery level. This option is disabled by default.</li>
-      </ul>
-      <br/>
-      1.25 (2022/11/26)
-      <ul>
-        <li>Remove usage of deprecated JetBrains API, fix compatibility with future IDE releases.</li>
-      </ul>
-      <br/>
-      1.24 (2022/02/12)
-      <ul>
-        <li>Improve macOS support.</li>
-      </ul>
-      <br/>
-      1.23 (2022/01/22)
-      <ul>
-        <li>Add two new icon sets for battery levels. You can choose your preferred icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
-      </ul>
-      <br/>
-      1.22 (2021/10/17)
-      <ul>
-        <li>You can now change refresh interval without restarting IDE.</li>
-        <li>Remove broken battery status preview in config panel.</li>
-      </ul>
-      <br/>
-      1.21 (2021/10/13)
-      <ul>
-        <li>Fix battery status not refreshing when the day is changing.</li>
-      </ul>
-      <br/>
-      1.20 (2021/10/09)
-      <ul>
-        <li>Fix: the config panel was constantly marked as modified. Changes are now correctly detected.</li>
-        <li>Minor performance optimization: avoid unnecessary calls to battery status when multiple projects are opened (status is cached for 10s and shared between all opened projects).</li>
-        <li>Minor performance optimization: detect OS only once at startup instead of on every battery status update.</li>
-      </ul>
-      <br/>
-      1.19 (2021/06/20)
-      <ul>
-        <li>Internal: remove usage of code deprecated in IJ 2021.2.</li>
-      </ul>
-      <br/>
-      1.18 (2021/06/05)
-      <ul>
-        <li>Improve Linux (ACPI) and macOS support.</li>
-      </ul>
-      <br/>
-      1.17 (2021/05/24)
-      <ul>
-        <li>Plugin now requires IDE restart on install. This is a workaround for a bug in IJ that resets plugin preferences on plugin update.</li>
-      </ul>
-      <br/>
-      1.16 (2021/03/26)
-      <ul>
-        <li>Refresh the status bar immediately on settings update.</li>
-      </ul>
-      <br/>
-      1.15 (2021/03/07)
-      <ul>
-        <li>Fix usage of a deprecated API. Will prevent possible issues with future IDE releases.</li>
-      </ul>
-      <br/>
-      1.14 (2020/10/03)
-      <ul>
-        <li>Add two new icon sets for battery levels. You can choose your preferred icons set in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>.</li>
-        <li>MS Windows: display battery life time with number of days when greater than 23:59:59.</li>
-        <li>Internal: rework log levels.</li>
-      </ul>
-      <br/>
-      1.13 (2020/09/27)
-      <ul>
-        <li>Internal: terminate battery info thread faster on app disposal.</li>
-      </ul>
-      <br/>
-      1.12 (2020/07/18)
-      <ul>
-        <li>Improve battery status rendering with colorized SVG icons.</li>
-        <li>Move config panel from <i>Tools</i> to <i>Appearance</i>.</li>
-      </ul>
-      <br/>
-      1.11 (2020/07/11)
-      <ul>
-        <li>Improve battery status rendering.</li>
-      </ul>
-      <br/>
-      1.10 (2020/06/16)
-      <ul>
-        <li>Set default battery status refresh interval to 90s (vs 20s previously).</li>
-      </ul>
-      <br/>
-      1.9 (2020/04/09)
-      <ul>
-        <li>Internal: fix usage of deprecated code from JNA.</li>
-      </ul>
-      <br/>
-      1.8 (2020/03/16)
-      <ul>
-        <li>Improve compatibility with IDE version 201 EAP.</li>
-      </ul>
-      <br/>
-      1.7 (2020/03/10)
-      <ul>
-        <li>Internal: migrate project to Gradle.</li>
-        <li>Make plugin compatible with IDE version 201 EAP.</li>
-        <li>Upgrade minimal IDE version from 173.0 to 201 (like IJ 2020.1).</li>
-      </ul>
-      <br/>
-      1.6 (2019/11/10)
-      <ul>
-        <li>Add an alternative method to get minimal battery information on MacOS.</li>
-      </ul>
-      <br/>
-      1.5 (2019/07/09)
-      <ul>
-        <li>Fix 'Last update' time: it was not refreshed.</li>
-      </ul>
-      <br/>
-      1.4 (2019/06/14)
-      <ul>
-        <li>Fix <code>java.time.DateTimeException: Invalid value for SecondOfDay (valid values 0 - 86399): 106922</code> error.</li>
-      </ul>
-      <br/>
-      1.3 (2019/05/07)
-      <ul>
-        <li>Linux and MacOS: you can customize the command that is used to retrieve battery status.</li>
-        <li>Windows: you can choose which battery status fields to display.</li>
-      </ul>
-      <br/>
-      1.2 (2019/05/02)
-      <ul>
-        <li>Battery Status refresh time is now configurable.</li>
-        <li>Click on the Battery Status to refresh it immediately.</li>
-      </ul>
-      <br/>
-      1.1 (2019/04/29)
-      <ul>
-        <li>Battery Status widget is now positioned after the InsertOverwrite widget.</li>
-        <li>rework deprecated API dependency to make plugin compatible with future IDE builds (<i>StatusBarWidget.TextPresentation.getMaxPossibleText()</i>).</li>
-      </ul>
-      <br/>
-      1.0
-      <ul>
-        <li>first release.</li>
-      </ul>
-    ]]>
-    </change-notes>
-
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="201.6668.113"/>
+    <idea-version since-build="231"/> <!-- 2023.1, needed for bundled JNA (used by Oshi) -->
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html#modules-available-in-all-products
          on how to target different products -->
@@ -182,9 +27,5 @@
                                  displayName="Battery Status"
                                  parentId="appearance"/>
     </extensions>
-
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
 
 </idea-plugin>
