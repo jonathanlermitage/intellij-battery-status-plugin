@@ -1,3 +1,4 @@
+import com.adarshr.gradle.testlogger.theme.ThemeType
 import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
 import com.github.benmanes.gradle.versions.reporter.result.Result
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
@@ -21,6 +22,7 @@ plugins {
     id("org.jetbrains.intellij") version "1.15.0" // https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.changelog") version "2.2.0" // https://github.com/JetBrains/gradle-changelog-plugin
     id("com.github.ben-manes.versions") version "0.47.0" // https://github.com/ben-manes/gradle-versions-plugin
+    id("com.adarshr.test-logger") version "3.2.0" // https://github.com/radarsh/gradle-test-logger-plugin
     id("com.palantir.git-version") version "3.0.0" // https://github.com/palantir/gradle-git-version
     id("com.github.andygoossens.modernizer") version "1.8.0" // https://github.com/andygoossens/gradle-modernizer-plugin
     id("biz.lermitage.oga") version "1.1.1" // https://github.com/jonathanlermitage/oga-gradle-plugin
@@ -30,6 +32,7 @@ plugins {
 val pluginDownloadIdeaSources: String by project
 val pluginVersion: String by project
 val pluginJavaVersion: String by project
+val testLoggerStyle: String by project
 val pluginEnableDebugLogs: String by project
 val pluginClearSandboxedIDESystemLogsBeforeRun: String by project
 val pluginIdeaVersion = detectBestIdeVersion()
@@ -89,6 +92,17 @@ modernizer {
     includeTestClasses = true
     // Find exclusion names at https://github.com/gaul/modernizer-maven-plugin/blob/master/modernizer-maven-plugin/src/main/resources/modernizer.xml
     exclusions = setOf("java/util/Optional.get:()Ljava/lang/Object;")
+}
+
+testlogger {
+    try {
+        theme = ThemeType.valueOf(testLoggerStyle)
+    } catch (e: Exception) {
+        theme = ThemeType.PLAIN
+        logger.warn("Invalid testLoggerRichStyle value '$testLoggerStyle', " +
+            "will use PLAIN style instead. Accepted values are PLAIN, STANDARD and MOCHA.")
+    }
+    showSimpleNames = true
 }
 
 tasks {
