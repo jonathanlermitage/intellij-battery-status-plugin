@@ -2,7 +2,7 @@
 
 ## 2.0 (WIP)
 * Important code rework. 
-* You can now use [oshi](https://github.com/oshi/oshi) in order to get battery status. This is more configurable (please see the new settings), it seems to work everywhere (macOS users may appreciate), but the battery information may differ a little bit from what you get from the operating system. Per example, on Windows, Oshi may indicate a *remaining time* (when charging or discharging) that differs from the Power Options indicator in the Windows status bar. Without Oshi, on Windows, plugin will query the native `Kernel32.SYSTEM_POWER_STATUS`, which is exactly what you get from the Power Options indicator. Oshi information are not wrong, but some of them simply offer estimates based on different calculation methods. You may observe the same thing on Linux (Oshi vs `acpi -b`) and macOS (Oshi vs `pmset -g batt`).
+* You can now use [oshi](https://github.com/oshi/oshi) in order to get battery status. This is more configurable (please see the new settings), it seems to work everywhere, even on macOS.
 
 ## 1.26 (2023/03/31)
 * Add option to enable or disable IDE's Power Saver mode based on battery level. This option is disabled by default.

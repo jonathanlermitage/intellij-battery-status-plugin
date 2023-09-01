@@ -77,12 +77,8 @@ public class SettingsForm implements Configurable {
             showHidePanes();
             modified = true;
         });
-        useOshiCheckBox.setToolTipText("<html>Use bundled Oshi library in order to read battery status. " +
-            "<br>With Oshi, plugin is more configurable and should work everywhere, " +
-            "even on macOS, but information may differ from what you can get from the OS, " +
-            "especially on Windows." +
-            "<br>Oshi information are not wrong, but some of them " +
-            "simply offer estimates based on different calculation methods.<br>" +
+        useOshiCheckBox.setToolTipText("<html>Use bundled Oshi library in order to read battery status.<br>" +
+            "With Oshi, plugin is more configurable and should work everywhere, even on macOS.<br>" +
             "Please note that when hovering the battery status, detailed status tooltip is always provided by Oshi.</html>");
         refreshRateLabel.setText("Refresh Battery Status every (ms):");
         resetDefaultsBtn.setText("Reset to defaults");
@@ -106,12 +102,16 @@ public class SettingsForm implements Configurable {
         drivePowerModeLabelCheckBox.setText("Watch battery level to enable/disable IDE's Power Save");
         lowBatteryLevelLabel.setText("          Enable Power Save when battery level is lower than %:");
         oshiFieldsLabel.setText("Battery fields to display. Example values:\n" +
-            "→ " + OshiFeatureName.CAPACITY_PERCENT.getLabel() + ": charge level from 0% to 100%. Per example 90%\n" +
-            "→ " + OshiFeatureName.AC.getLabel() + ": Online or Offline\n" +
-            "→ " + OshiFeatureName.DISCHARGE_TIME.getLabel() + ": battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
-            "→ " + OshiFeatureName.DISCHARGE_TIME_LONG.getLabel() + ": battery time remaining as 'XXhr YYm remaining'. Visible when discharging\n" +
-            "→ " + OshiFeatureName.CHARGE_TIME.getLabel() + ": time to full charge as 'XXhr YYm'. Visible when charging\n" +
-            "→ " + OshiFeatureName.CHARGE_TIME_LONG.getLabel() + ": time to full charge as 'XXhr YYm to full charge'. Visible when charging\n" +
+            "- " + OshiFeatureName.CAPACITY_PERCENT.getLabel() + ":\n   charge level from 0% to 100%\n" +
+            "- " + OshiFeatureName.AC.getLabel() + ":\n   Online or Offline\n" +
+            "- " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME.getLabel() + ":\n   estimated (as reported by OS) battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
+            "- " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME_LONG.getLabel() + ":\n   estimated (as reported by OS) battery time remaining as 'XXhr YYm remaining'. Visible when discharging\n" +
+            "- " + OshiFeatureName.DISCHARGE_INSTANT_TIME.getLabel() + ":\n   instant battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
+            "- " + OshiFeatureName.DISCHARGE_INSTANT_TIME_LONG.getLabel() + ":\n   instant battery time remaining as 'XXhr YYm remaining'. Visible when discharging\n" +
+            "- " + OshiFeatureName.CHARGE_ESTIMATED_TIME.getLabel() + ":\n   estimated (as reported by OS) time to full charge as 'XXhr YYm'. Visible when charging\n" +
+            "- " + OshiFeatureName.CHARGE_ESTIMATED_TIME_LONG.getLabel() + ":\n   estimated (as reported by OS) time to full charge as 'XXhr YYm to full charge'. Visible when charging\n" +
+            "- " + OshiFeatureName.CHARGE_INSTANT_TIME.getLabel() + ":\n   instant time to full charge as 'XXhr YYm'. Visible when charging\n" +
+            "- " + OshiFeatureName.CHARGE_INSTANT_TIME_LONG.getLabel() + ":\n   instant time to full charge as 'XXhr YYm to full charge'. Visible when charging\n" +
             "Fields are replaced by actual values. Other characters are preserved.");
 
         drivePowerModeLabelCheckBox.addActionListener(e -> {
