@@ -33,9 +33,9 @@ public class SettingsService implements PersistentStateComponent<SettingsService
     public static final Integer DEFAULT_LOW_POWER_VALUE = 25;
     public static final Boolean DEFAULT_CONFIGURE_POWER_SAVER_BASED_ON_POWER_LEVEL = false;
     public static final Boolean DEFAULT_USE_OSHI = true;
-    public static final String DEFAULT_OSHI_BATTERY_FIELDS = OshiFeatureName.CAPACITY_PERCENT.getLabel() +
+    public static final String DEFAULT_OSHI_BATTERY_FIELDS = OshiFeatureName.CHARGE_LEVEL.getLabel() +
         ", " + OshiFeatureName.AC.getLabel() +
-        ", " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME.getLabel() + OshiFeatureName.CHARGE_ESTIMATED_TIME.getLabel();
+        ", " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME_SHORT.getLabel() + OshiFeatureName.CHARGE_ESTIMATED_TIME_SHORT.getLabel();
 
     // the implementation of PersistentStateComponent works by serializing public fields, so keep it public
     public Integer batteryRefreshIntervalInMs;

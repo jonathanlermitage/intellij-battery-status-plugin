@@ -223,11 +223,11 @@ public class BatteryUtils {
             SettingsService settingsService = IJUtils.getSettingsService();
             String requestedFields = settingsService.getOshiBatteryFields();
 
-            if (requestedFields.contains(OshiFeatureName.CAPACITY_PERCENT.getLabel())) {
+            if (requestedFields.contains(OshiFeatureName.CHARGE_LEVEL.getLabel())) {
                 float currentCapacity = (float) powerSource.getCurrentCapacity();
                 float maxCapacity = (float) powerSource.getMaxCapacity();
                 String remainingCapacityPercent = Math.round((currentCapacity * 100f) / maxCapacity) + "%";
-                requestedFields = requestedFields.replace(OshiFeatureName.CAPACITY_PERCENT.getLabel(), remainingCapacityPercent);
+                requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_LEVEL.getLabel(), remainingCapacityPercent);
             }
 
             if (requestedFields.contains(OshiFeatureName.AC.getLabel())) {
@@ -236,31 +236,31 @@ public class BatteryUtils {
             }
 
             boolean containsDischargeInstantTimeLong = requestedFields.contains(OshiFeatureName.DISCHARGE_INSTANT_TIME_LONG.getLabel());
-            if (requestedFields.contains(OshiFeatureName.DISCHARGE_INSTANT_TIME.getLabel()) || containsDischargeInstantTimeLong) {
-                String time = "";
+            if (requestedFields.contains(OshiFeatureName.DISCHARGE_INSTANT_TIME_SHORT.getLabel()) || containsDischargeInstantTimeLong) {
+                String remainingTimeDischarging = "";
                 if (powerSource.isDischarging()) {
-                    long timeRemainingInstant = (long) powerSource.getTimeRemainingInstant();
-                    if (timeRemainingInstant > 0) {
-                        time = formatSecondsToHumanDuration(timeRemainingInstant);
+                    long timeRemaining = (long) powerSource.getTimeRemainingInstant();
+                    if (timeRemaining > 0) {
+                        remainingTimeDischarging = formatSecondsToHumanDuration(timeRemaining);
                         if (containsDischargeInstantTimeLong) {
-                            time += " remaining";
+                            remainingTimeDischarging += " remaining";
                         }
                     }
                 }
                 if (containsDischargeInstantTimeLong) {
-                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_INSTANT_TIME_LONG.getLabel(), time);
+                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_INSTANT_TIME_LONG.getLabel(), remainingTimeDischarging);
                 } else {
-                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_INSTANT_TIME.getLabel(), time);
+                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_INSTANT_TIME_SHORT.getLabel(), remainingTimeDischarging);
                 }
             }
 
             boolean containsDischargeEstimatedTimeLong = requestedFields.contains(OshiFeatureName.DISCHARGE_ESTIMATED_TIME_LONG.getLabel());
-            if (requestedFields.contains(OshiFeatureName.DISCHARGE_ESTIMATED_TIME.getLabel()) || containsDischargeEstimatedTimeLong) {
+            if (requestedFields.contains(OshiFeatureName.DISCHARGE_ESTIMATED_TIME_SHORT.getLabel()) || containsDischargeEstimatedTimeLong) {
                 String remainingTimeDischarging = "";
                 if (powerSource.isDischarging()) {
-                    long time = (long) powerSource.getTimeRemainingEstimated();
-                    if (time > 0) {
-                        remainingTimeDischarging = formatSecondsToHumanDuration(time);
+                    long timeRemaining = (long) powerSource.getTimeRemainingEstimated();
+                    if (timeRemaining > 0) {
+                        remainingTimeDischarging = formatSecondsToHumanDuration(timeRemaining);
                         if (containsDischargeEstimatedTimeLong) {
                             remainingTimeDischarging += " remaining";
                         }
@@ -269,17 +269,17 @@ public class BatteryUtils {
                 if (containsDischargeEstimatedTimeLong) {
                     requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_ESTIMATED_TIME_LONG.getLabel(), remainingTimeDischarging);
                 } else {
-                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_ESTIMATED_TIME.getLabel(), remainingTimeDischarging);
+                    requestedFields = requestedFields.replace(OshiFeatureName.DISCHARGE_ESTIMATED_TIME_SHORT.getLabel(), remainingTimeDischarging);
                 }
             }
 
             boolean containsChargeInstantTimeLong = requestedFields.contains(OshiFeatureName.CHARGE_INSTANT_TIME_LONG.getLabel());
-            if (requestedFields.contains(OshiFeatureName.CHARGE_INSTANT_TIME.getLabel()) || containsChargeInstantTimeLong) {
+            if (requestedFields.contains(OshiFeatureName.CHARGE_INSTANT_TIME_SHORT.getLabel()) || containsChargeInstantTimeLong) {
                 String remainingTimeCharging = "";
                 if (powerSource.isCharging()) {
-                    long time = (long) powerSource.getTimeRemainingInstant();
-                    if (time > 0) {
-                        remainingTimeCharging = formatSecondsToHumanDuration(time);
+                    long timeRemaining = (long) powerSource.getTimeRemainingInstant();
+                    if (timeRemaining > 0) {
+                        remainingTimeCharging = formatSecondsToHumanDuration(timeRemaining);
                         if (containsChargeInstantTimeLong) {
                             remainingTimeCharging += " to full charge";
                         }
@@ -288,26 +288,26 @@ public class BatteryUtils {
                 if (containsChargeInstantTimeLong) {
                     requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_INSTANT_TIME_LONG.getLabel(), remainingTimeCharging);
                 } else {
-                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_INSTANT_TIME.getLabel(), remainingTimeCharging);
+                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_INSTANT_TIME_SHORT.getLabel(), remainingTimeCharging);
                 }
             }
 
             boolean containsChargeEstimatedTimeLong = requestedFields.contains(OshiFeatureName.CHARGE_ESTIMATED_TIME_LONG.getLabel());
-            if (requestedFields.contains(OshiFeatureName.CHARGE_ESTIMATED_TIME.getLabel()) || containsChargeEstimatedTimeLong) {
-                String time = "";
+            if (requestedFields.contains(OshiFeatureName.CHARGE_ESTIMATED_TIME_SHORT.getLabel()) || containsChargeEstimatedTimeLong) {
+                String remainingTimeCharging = "";
                 if (powerSource.isCharging()) {
-                    long timeRemainingInstant = (long) powerSource.getTimeRemainingEstimated();
-                    if (timeRemainingInstant > 0) {
-                        time = formatSecondsToHumanDuration(timeRemainingInstant);
+                    long timeRemaining = (long) powerSource.getTimeRemainingEstimated();
+                    if (timeRemaining > 0) {
+                        remainingTimeCharging = formatSecondsToHumanDuration(timeRemaining);
                         if (containsChargeEstimatedTimeLong) {
-                            time += " to full charge";
+                            remainingTimeCharging += " to full charge";
                         }
                     }
                 }
                 if (containsChargeEstimatedTimeLong) {
-                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_ESTIMATED_TIME_LONG.getLabel(), time);
+                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_ESTIMATED_TIME_LONG.getLabel(), remainingTimeCharging);
                 } else {
-                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_ESTIMATED_TIME.getLabel(), time);
+                    requestedFields = requestedFields.replace(OshiFeatureName.CHARGE_ESTIMATED_TIME_SHORT.getLabel(), remainingTimeCharging);
                 }
             }
 

@@ -102,15 +102,15 @@ public class SettingsForm implements Configurable {
         drivePowerModeLabelCheckBox.setText("Watch battery level to enable/disable IDE's Power Save");
         lowBatteryLevelLabel.setText("          Enable Power Save when battery level is lower than %:");
         oshiFieldsLabel.setText("Battery fields to display. Example values:\n" +
-            "- " + OshiFeatureName.CAPACITY_PERCENT.getLabel() + ":\n   charge level from 0% to 100%\n" +
+            "- " + OshiFeatureName.CHARGE_LEVEL.getLabel() + ":\n   charge level from 0% to 100%\n" +
             "- " + OshiFeatureName.AC.getLabel() + ":\n   Online or Offline\n" +
-            "- " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME.getLabel() + ":\n   estimated (as reported by OS) battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
+            "- " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME_SHORT.getLabel() + ":\n   estimated (as reported by OS) battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
             "- " + OshiFeatureName.DISCHARGE_ESTIMATED_TIME_LONG.getLabel() + ":\n   estimated (as reported by OS) battery time remaining as 'XXhr YYm remaining'. Visible when discharging\n" +
-            "- " + OshiFeatureName.DISCHARGE_INSTANT_TIME.getLabel() + ":\n   instant battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
+            "- " + OshiFeatureName.DISCHARGE_INSTANT_TIME_SHORT.getLabel() + ":\n   instant battery time remaining as 'XXhr YYm'. Visible when discharging\n" +
             "- " + OshiFeatureName.DISCHARGE_INSTANT_TIME_LONG.getLabel() + ":\n   instant battery time remaining as 'XXhr YYm remaining'. Visible when discharging\n" +
-            "- " + OshiFeatureName.CHARGE_ESTIMATED_TIME.getLabel() + ":\n   estimated (as reported by OS) time to full charge as 'XXhr YYm'. Visible when charging\n" +
+            "- " + OshiFeatureName.CHARGE_ESTIMATED_TIME_SHORT.getLabel() + ":\n   estimated (as reported by OS) time to full charge as 'XXhr YYm'. Visible when charging\n" +
             "- " + OshiFeatureName.CHARGE_ESTIMATED_TIME_LONG.getLabel() + ":\n   estimated (as reported by OS) time to full charge as 'XXhr YYm to full charge'. Visible when charging\n" +
-            "- " + OshiFeatureName.CHARGE_INSTANT_TIME.getLabel() + ":\n   instant time to full charge as 'XXhr YYm'. Visible when charging\n" +
+            "- " + OshiFeatureName.CHARGE_INSTANT_TIME_SHORT.getLabel() + ":\n   instant time to full charge as 'XXhr YYm'. Visible when charging\n" +
             "- " + OshiFeatureName.CHARGE_INSTANT_TIME_LONG.getLabel() + ":\n   instant time to full charge as 'XXhr YYm to full charge'. Visible when charging\n" +
             "Fields are replaced by actual values. Other characters are preserved.");
 
