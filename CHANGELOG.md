@@ -1,5 +1,8 @@
 # Extra Icons Change Log
 
+## 2.1 (2023/12/09)
+* Upgrade the [Oshi](https://github.com/oshi/oshi) dependency, used to get battery information.
+
 ## 2.0 (2023/09/02)
 * Important code rework. 
 * You can now use [Oshi](https://github.com/oshi/oshi) in order to get battery status. This is more configurable (please see the plugin's settings panel), and it seems to work everywhere, even on macOS. Oshi is enabled by default.
