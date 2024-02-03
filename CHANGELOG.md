@@ -1,5 +1,8 @@
 # Extra Icons Change Log
 
+## 2.3 (2024/02/03)
+* Upgrade the [Oshi](https://github.com/oshi/oshi) dependency, used to get battery information.
+
 ## 2.2 (2024/01/02)
 * Upgrade the [Oshi](https://github.com/oshi/oshi) dependency, used to get battery information.
 
