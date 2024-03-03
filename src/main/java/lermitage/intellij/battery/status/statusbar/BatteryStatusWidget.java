@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.WindowManager;
+import com.intellij.util.concurrency.AppExecutorUtil;
 import lermitage.intellij.battery.status.IJUtils;
 import lermitage.intellij.battery.status.cfg.SettingsService;
 import lermitage.intellij.battery.status.core.Globals;
@@ -13,15 +14,15 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("WeakerAccess")
 public class BatteryStatusWidget implements StatusBarWidget {
 
     private final Logger LOG = Logger.getInstance(getClass().getName());
     private final StatusBar statusBar;
-    private Timer timer;
+    private ScheduledFuture<?> timer;
 
     @Contract(pure = true)
     public BatteryStatusWidget(Project project) {
@@ -54,13 +55,9 @@ public class BatteryStatusWidget implements StatusBarWidget {
         try {
             SettingsService settingsService = IJUtils.getSettingsService();
             LOG.info("Battery Status widget will refresh battery status every " + settingsService.getBatteryRefreshIntervalInMs() + " ms");
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    statusBar.updateWidget(Globals.WIDGET_ID);
-                }
-            }, 0, settingsService.getBatteryRefreshIntervalInMs());
+            timer = AppExecutorUtil.getAppScheduledExecutorService().scheduleWithFixedDelay(() -> {
+                statusBar.updateWidget(Globals.WIDGET_ID);
+            }, 0, settingsService.getBatteryRefreshIntervalInMs(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             LOG.warn(e);
         }
@@ -69,8 +66,8 @@ public class BatteryStatusWidget implements StatusBarWidget {
     @Override
     public void dispose() {
         if (timer != null) {
-            timer.cancel();
-            timer.purge();
+            timer.cancel(true);
+            timer = null;
         }
     }
 }

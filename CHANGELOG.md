@@ -1,5 +1,8 @@
 # Extra Icons Change Log
 
+## 2.3.1 (2024/03/04)
+* minor performance optimization: reduce threads spawning by using IDE thread pool and scheduler instead of starting new threads for scheduled tasks.
+
 ## 2.3 (2024/02/03)
 * Upgrade the [Oshi](https://github.com/oshi/oshi) dependency, used to get battery information.
 
