@@ -10,14 +10,14 @@
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="231"/> <!-- 2023.1, needed for bundled JNA (used by Oshi) -->
+    <idea-version since-build="233.11799.241"/>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html#modules-available-in-all-products
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <errorHandler implementation="com.intellij.diagnostic.JetBrainsMarketplaceErrorReportSubmitter"/>
         <applicationService serviceImplementation="lermitage.intellij.battery.status.cfg.SettingsService"/>
         <statusBarWidgetFactory implementation="lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"
                                 id="lermitage.intellij.battery.status.statusbar.BatteryStatusWidgetFactory"
