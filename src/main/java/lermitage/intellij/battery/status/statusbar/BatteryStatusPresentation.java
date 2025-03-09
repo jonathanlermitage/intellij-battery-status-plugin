@@ -1,5 +1,6 @@
 package lermitage.intellij.battery.status.statusbar;
 
+import com.intellij.ide.PowerSaveMode;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
 import lermitage.intellij.battery.status.IJUtils;
@@ -38,8 +39,16 @@ class BatteryStatusPresentation implements StatusBarWidget.MultipleTextValuesPre
         String lastBatteryStatus = BatteryReader.getBatteryStatus();
         SettingsService settingsService = IJUtils.getSettingsService();
 
-        // enable/disable Power Saver mode if plugin is configured to configure this mode based on power level
+        // enable/disable Power Saver mode if the plugin is configured to configure this mode based on power level
         if (settingsService.getConfigurePowerSaverBasedOnPowerLevel()) {
+            String lastBatteryStatusUpperCase = lastBatteryStatus.toUpperCase();
+            if (lastBatteryStatusUpperCase.contains("ONLINE") || lastBatteryStatusUpperCase.contains("CHARGING")) {
+                if (PowerSaveMode.isEnabled()) {
+                    IJUtils.enablePowerSaver(false);
+                }
+                lastBatteryLevel = null;
+                return lastBatteryStatus;
+            }
 
             if (lastBatteryLevel != null) {
                 Optional<Integer> batteryChargeLevel = UIUtils.getBatteryChargeLevel(lastBatteryStatus);
