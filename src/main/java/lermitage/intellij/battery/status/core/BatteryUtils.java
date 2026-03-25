@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,12 @@ public class BatteryUtils {
     }
 
     private static List<String> execCommandThenReadLines(String command) throws IOException {
-        Process chkBat = Runtime.getRuntime().exec(new String[]{command});
+        StringTokenizer st = new StringTokenizer(command);
+        String[] cmdarray = new String[st.countTokens()];
+        for (int i = 0; st.hasMoreTokens(); i++) {
+            cmdarray[i] = st.nextToken();
+        }
+        Process chkBat = Runtime.getRuntime().exec(cmdarray);
         try (BufferedReader chkBuf = new BufferedReader(new InputStreamReader(chkBat.getInputStream()))) {
             return chkBuf.lines().filter(Objects::nonNull).collect(Collectors.toList());
         }
