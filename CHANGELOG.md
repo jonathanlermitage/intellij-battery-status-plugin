@@ -1,4 +1,4 @@
-# Extra Icons Change Log
+# Battery Status Change Log
 
 ## 2.7 (2026/03/25)
 * fix usage of a deprecated API, ensuring compatibility with future IDE releases.
