@@ -7,6 +7,14 @@
     <description><![CDATA[
       Display battery status in the Status Bar (updated every 90 seconds, configurable in <i>File</i> &gt; <i>Settings...</i> &gt; <i>Appearance</i> &gt; <i>Battery Status</i>).<br/>
       Useful if you run IDE in full screen.
+      <br/>
+      <br/>
+Check also my other <a href="https://plugins.jetbrains.com/author/ed9cc7eb-74f5-46c1-b0df-67162fe1a1c5">plugins</a>.<br>
+<br>
+<a href="https://github.com/jonathanlermitage/intellij-battery-status-plugin/issues">Issues and Feature Requests</a><br>
+<a href="https://github.com/jonathanlermitage/intellij-battery-status-plugin/blob/master/CHANGELOG.md">Changelog</a> | <a href="https://www.linkedin.com/in/jonathan-lermitage/">LinkedIn</a> | <a href="https://bsky.app/profile/jonathanlermitage.bsky.social">Bluesky</a> | <a href="https://vshymanskyy.github.io/StandWithUkraine/">💙 Help Ukraine 💛</a>
+<br>
+<br>
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->

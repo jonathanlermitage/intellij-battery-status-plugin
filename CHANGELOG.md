@@ -1,5 +1,8 @@
 # Extra Icons Change Log
 
+## 2.7 (2026/03/25)
+* fix usage of a deprecated API, ensuring compatibility with future IDE releases.
+
 ## 2.6 (2025/09/09)
 * Implement [#7](https://github.com/jonathanlermitage/intellij-battery-status-plugin/issues/7): set switching to Battery saver only on DC (battery).
 * Upgrade the [Oshi](https://github.com/oshi/oshi) dependency, used to get battery information.

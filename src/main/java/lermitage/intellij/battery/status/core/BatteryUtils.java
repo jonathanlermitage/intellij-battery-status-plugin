@@ -41,7 +41,7 @@ public class BatteryUtils {
     }
 
     private static List<String> execCommandThenReadLines(String command) throws IOException {
-        Process chkBat = Runtime.getRuntime().exec(command);
+        Process chkBat = Runtime.getRuntime().exec(new String[]{command});
         try (BufferedReader chkBuf = new BufferedReader(new InputStreamReader(chkBat.getInputStream()))) {
             return chkBuf.lines().filter(Objects::nonNull).collect(Collectors.toList());
         }
