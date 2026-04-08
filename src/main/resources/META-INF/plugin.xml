@@ -36,4 +36,10 @@ Check also my other <a href="https://plugins.jetbrains.com/author/ed9cc7eb-74f5-
                                  parentId="appearance"/>
     </extensions>
 
+    <applicationListeners>
+        <listener class="lermitage.intellij.battery.status.MyAppLifecycleListener"
+                  topic="com.intellij.ide.AppLifecycleListener"
+                  activeInHeadlessMode="false"/>
+    </applicationListeners>
+
 </idea-plugin>
