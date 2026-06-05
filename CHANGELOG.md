@@ -1,5 +1,8 @@
 # Battery Status Change Log
 
+## 2.9 (2026/06/05)
+* fix usage of JetBrains removed APIs, fixing the compatibility with future IDEs (2026.2+).
+
 ## 2.8 (2026/04/08)
 * update the Privacy Policy. A minimal set of anonymous data is now collected and is retained for a maximum of 31 days. This data is used to determine which versions of the IDEs are in use and to assess whether it is worthwhile to continue supporting older IDE versions. The data is never shared with anyone else. [Click here](https://github.com/jonathanlermitage/intellij-battery-status-plugin/blob/master/PRIVACY.md) to view the full description and learn how to disable data collection.
 
