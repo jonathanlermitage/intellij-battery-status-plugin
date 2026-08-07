@@ -1,5 +1,8 @@
 # Battery Status Change Log
 
+## 2.10 (2026/08/07)
+* Upgrade the [Oshi](https://github.com/oshi/oshi) dependency (6.8.3 -> 7.4.4), used to get battery information.
+
 ## 2.9 (2026/06/05)
 * fix usage of JetBrains removed APIs, fixing the compatibility with future IDEs (2026.2+).
 

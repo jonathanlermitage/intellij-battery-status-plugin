@@ -60,10 +60,12 @@ val junitVersion = "5.10.1"
 val junitPlatformLauncher = "1.10.1"
 
 dependencies {
-    implementation("com.github.oshi:oshi-core:6.8.3") { // https://github.com/oshi/oshi
+    implementation("com.github.oshi:oshi-core:7.4.4") { // https://github.com/oshi/oshi
         // exclude JNA to avoid java.lang.UnsatisfiedLinkError: Unable to locate JNA native support library
         exclude("net.java.dev.jna", "jna")
         exclude("net.java.dev.jna", "jna-platform")
+        exclude("net.java.dev.jna", "jna-jpms")
+        exclude("net.java.dev.jna", "jna-platform-jpms")
         // SLF4J comes with IDE
         exclude("org.slf4j", "slf4j-api")
     }
