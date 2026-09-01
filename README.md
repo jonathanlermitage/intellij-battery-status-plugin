@@ -39,4 +39,4 @@ Linkedin profile: [jonathan-lermitage](https://www.linkedin.com/in/jonathan-lerm
 
 ## License
 
-MIT License. In other words, you can do what you want: this project is entirely OpenSource, Free and Gratis.
+AGPL-3.0 (GNU Affero General Public License).
