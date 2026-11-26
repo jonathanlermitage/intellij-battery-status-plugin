@@ -1,5 +1,8 @@
 # Battery Status Change Log
 
+## 2.12 (2026/11/26)
+* upgrade the [Oshi](https://github.com/oshi/oshi) dependency (7.4.4 -> 7.8.0), used to get battery information.
+
 ## 2.11 (2026/09/22)
 * fix compatibility with 2026.3 IDEs. Due to this change, 2026.3 is the new minimal platform supported.
 
